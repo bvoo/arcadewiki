@@ -20,6 +20,7 @@ const config = defineConfig({
     }),
     tanstackStart({
       customViteReactPlugin: true,
+      target: 'cloudflare-module'
     }),
     viteReact(),
   ],
