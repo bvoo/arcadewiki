@@ -79,7 +79,7 @@ Write your description here. You can use standard Markdown: headings, paragraphs
 - __Numbers__: use plain numbers (no quotes). Prices are in USD.
 - __Omit unknowns__: leave fields out instead of guessing.
 - __External links__: set a single `link` to the official product page if available.
-- __Images__: For now, store public images under `public/` and link by absolute path (e.g., `/images/...`).
+- __Images__: For now, store public images next to their respective `index.mdx` and link by relative path (e.g., `./controller.webp`).
 
 ## Local Development
 
