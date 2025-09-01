@@ -20,7 +20,8 @@ const config = defineConfig({
     }),
     tanstackStart({
       customViteReactPlugin: true,
-      target: 'cloudflare-module'
+      // Use the Pages preset so Nitro doesn't declare a reserved 'ASSETS' binding
+      target: 'cloudflare-pages'
     }),
     viteReact(),
   ],
