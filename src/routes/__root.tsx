@@ -1,6 +1,5 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanstackDevtools } from '@tanstack/react-devtools'
+import React, { useEffect, useState } from 'react'
 
 import appCss from '../styles.css?url'
 
@@ -47,19 +46,32 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
-        <TanstackDevtools
-          config={{
-            position: 'bottom-left',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+        {typeof window !== 'undefined' && import.meta.env.DEV ? <ClientDevtools /> : null}
         <Scripts />
       </body>
     </html>
   )
+}
+
+function ClientDevtools() {
+  const [node, setNode] = useState<React.ReactNode>(null)
+  // Use a dynamic import to avoid bundling devtools into the server build.
+  useEffect(() => {
+    let mounted = true
+    Promise.all([
+      import('@tanstack/react-devtools'),
+      import('@tanstack/react-router-devtools'),
+    ]).then(([devtools, routerDevtools]) => {
+      if (!mounted) return
+      const { TanstackDevtools } = devtools as any
+      const { TanStackRouterDevtoolsPanel } = routerDevtools as any
+      setNode(
+        <TanstackDevtools
+          config={{ position: 'bottom-left' }}
+          plugins={[{ name: 'Tanstack Router', render: <TanStackRouterDevtoolsPanel /> }]} />
+      )
+    })
+    return () => { mounted = false }
+  }, [])
+  return node
 }
