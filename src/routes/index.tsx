@@ -9,6 +9,7 @@ import {
   useReactTable,
   type ColumnDef,
   type FilterFn,
+  type SortingState,
 } from '@tanstack/react-table'
 import { compareItems, rankItem, type RankingInfo } from '@tanstack/match-sorter-utils'
 
@@ -44,6 +45,9 @@ type Row = Controller & { company: string; controller: string; slug: string }
 
 function ControllersHome() {
   const [globalFilter, setGlobalFilter] = React.useState('')
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: 'releaseYear', desc: true },
+  ])
   const usd = React.useMemo(
     () => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
     [],
@@ -198,8 +202,9 @@ function ControllersHome() {
     data: rows,
     columns,
     filterFns: { fuzzy: fuzzyFilter },
-    state: { globalFilter },
+    state: { globalFilter, sorting },
     onGlobalFilterChange: setGlobalFilter,
+    onSortingChange: setSorting,
     globalFilterFn: 'fuzzy',
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
