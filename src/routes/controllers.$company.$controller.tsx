@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { ChevronDown } from 'lucide-react'
 import { EditOnGitHub } from '@/components/EditOnGitHub'
+import { SiteHeader } from '@/components/SiteHeader'
 
 export const Route = createFileRoute('/controllers/$company/$controller')({
   component: ControllerContentPage,
@@ -42,7 +43,9 @@ function ControllerContentPage() {
       : []
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-6">
+    <div className="min-h-screen bg-background text-foreground">
+      <SiteHeader />
+      <div className="p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">{meta.name}</h1>
@@ -151,6 +154,7 @@ function ControllerContentPage() {
           <Component />
         </article>
         <EditOnGitHub filePath={`src/content/${company}/${controller}/index.mdx`} />
+      </div>
       </div>
     </div>
   )

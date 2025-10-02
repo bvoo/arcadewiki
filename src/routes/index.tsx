@@ -22,6 +22,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { EditOnGitHub } from '@/components/EditOnGitHub'
+import { SiteHeader } from '@/components/SiteHeader'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -214,7 +215,9 @@ function ControllersHome() {
   })
 
   return (
-    <div className="min-h-screen bg-background p-6 text-foreground">
+    <div className="min-h-screen bg-background text-foreground">
+      <SiteHeader />
+      <div className="p-6">
       <DebouncedInput
         value={globalFilter}
         onChange={(v) => setGlobalFilter(String(v))}
@@ -304,6 +307,7 @@ function ControllersHome() {
         </select>
       </div>
       <EditOnGitHub filePath="src/routes/index.tsx" />
+      </div>
     </div>
   )
 }
