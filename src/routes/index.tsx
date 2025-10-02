@@ -21,6 +21,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { EditOnGitHub } from '@/components/EditOnGitHub'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -302,6 +303,7 @@ function ControllersHome() {
           ))}
         </select>
       </div>
+      <EditOnGitHub filePath="src/routes/index.tsx" />
     </div>
   )
 }

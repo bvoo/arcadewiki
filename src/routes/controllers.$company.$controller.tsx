@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { ChevronDown } from 'lucide-react'
+import { EditOnGitHub } from '@/components/EditOnGitHub'
 
 export const Route = createFileRoute('/controllers/$company/$controller')({
   component: ControllerContentPage,
@@ -149,6 +150,7 @@ function ControllerContentPage() {
         <article className="prose prose-invert max-w-none">
           <Component />
         </article>
+        <EditOnGitHub filePath={`src/content/${company}/${controller}/index.mdx`} />
       </div>
     </div>
   )
