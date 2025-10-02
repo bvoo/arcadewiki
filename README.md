@@ -1,4 +1,4 @@
-# Rectangle Directory — Contributing Guide
+# Arcade.Wiki — Contributing Guide
 
 Thanks for helping improve Rectangle Directory! This guide explains how to add and maintain controller pages using MDX.
 
