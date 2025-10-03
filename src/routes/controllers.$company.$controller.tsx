@@ -162,7 +162,7 @@ function ControllerContentPage() {
       <SiteHeader
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: meta.maker, href: "/" },
+          { label: meta.maker, href: `/makers/${company}` },
           { label: meta.name },
         ]}
         actions={

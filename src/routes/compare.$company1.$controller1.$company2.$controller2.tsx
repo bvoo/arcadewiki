@@ -101,13 +101,13 @@ function ComparisonPage() {
       <SiteHeader
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: meta1.maker, href: "/" },
+          { label: meta1.maker, href: `/makers/${company1}` },
           {
             label: meta1.name,
             href: `/controllers/${company1}/${controller1}`,
           },
           { label: "vs" },
-          { label: meta2.maker, href: "/" },
+          { label: meta2.maker, href: `/makers/${company2}` },
           {
             label: meta2.name,
             href: `/controllers/${company2}/${controller2}`,

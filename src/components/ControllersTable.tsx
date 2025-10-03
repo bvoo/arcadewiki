@@ -151,7 +151,22 @@ export function ControllersTable({
         filterFn: "fuzzy",
         sortingFn: fuzzySort,
       },
-      { accessorKey: "maker", header: "Maker", filterFn: "includesString" },
+      {
+        accessorKey: "maker",
+        header: "Maker",
+        filterFn: "includesString",
+        cell: (info) => {
+          const r = info.row.original as Row;
+          return (
+            <a
+              href={`/makers/${r.company}`}
+              className="text-primary hover:underline font-medium"
+            >
+              {info.getValue<string>()}
+            </a>
+          );
+        },
+      },
       {
         accessorKey: "buttonType",
         header: "Buttons",

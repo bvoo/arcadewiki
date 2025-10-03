@@ -10,12 +10,24 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MakersIndexRouteImport } from './routes/makers.index'
+import { Route as MakersCompanyRouteImport } from './routes/makers.$company'
 import { Route as ControllersCompanyControllerRouteImport } from './routes/controllers.$company.$controller'
 import { Route as CompareCompany1Controller1Company2Controller2RouteImport } from './routes/compare.$company1.$controller1.$company2.$controller2'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MakersIndexRoute = MakersIndexRouteImport.update({
+  id: '/makers/',
+  path: '/makers/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MakersCompanyRoute = MakersCompanyRouteImport.update({
+  id: '/makers/$company',
+  path: '/makers/$company',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ControllersCompanyControllerRoute =
@@ -33,17 +45,23 @@ const CompareCompany1Controller1Company2Controller2Route =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/makers/$company': typeof MakersCompanyRoute
+  '/makers': typeof MakersIndexRoute
   '/controllers/$company/$controller': typeof ControllersCompanyControllerRoute
   '/compare/$company1/$controller1/$company2/$controller2': typeof CompareCompany1Controller1Company2Controller2Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/makers/$company': typeof MakersCompanyRoute
+  '/makers': typeof MakersIndexRoute
   '/controllers/$company/$controller': typeof ControllersCompanyControllerRoute
   '/compare/$company1/$controller1/$company2/$controller2': typeof CompareCompany1Controller1Company2Controller2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/makers/$company': typeof MakersCompanyRoute
+  '/makers/': typeof MakersIndexRoute
   '/controllers/$company/$controller': typeof ControllersCompanyControllerRoute
   '/compare/$company1/$controller1/$company2/$controller2': typeof CompareCompany1Controller1Company2Controller2Route
 }
@@ -51,22 +69,30 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/makers/$company'
+    | '/makers'
     | '/controllers/$company/$controller'
     | '/compare/$company1/$controller1/$company2/$controller2'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/makers/$company'
+    | '/makers'
     | '/controllers/$company/$controller'
     | '/compare/$company1/$controller1/$company2/$controller2'
   id:
     | '__root__'
     | '/'
+    | '/makers/$company'
+    | '/makers/'
     | '/controllers/$company/$controller'
     | '/compare/$company1/$controller1/$company2/$controller2'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MakersCompanyRoute: typeof MakersCompanyRoute
+  MakersIndexRoute: typeof MakersIndexRoute
   ControllersCompanyControllerRoute: typeof ControllersCompanyControllerRoute
   CompareCompany1Controller1Company2Controller2Route: typeof CompareCompany1Controller1Company2Controller2Route
 }
@@ -78,6 +104,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/makers/': {
+      id: '/makers/'
+      path: '/makers'
+      fullPath: '/makers'
+      preLoaderRoute: typeof MakersIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/makers/$company': {
+      id: '/makers/$company'
+      path: '/makers/$company'
+      fullPath: '/makers/$company'
+      preLoaderRoute: typeof MakersCompanyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/controllers/$company/$controller': {
@@ -99,6 +139,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MakersCompanyRoute: MakersCompanyRoute,
+  MakersIndexRoute: MakersIndexRoute,
   ControllersCompanyControllerRoute: ControllersCompanyControllerRoute,
   CompareCompany1Controller1Company2Controller2Route:
     CompareCompany1Controller1Company2Controller2Route,
