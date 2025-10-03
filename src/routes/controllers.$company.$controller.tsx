@@ -12,6 +12,97 @@ import { InfoCard } from '@/components/InfoCard'
 
 export const Route = createFileRoute('/controllers/$company/$controller')({
   component: ControllerContentPage,
+  head: ({ params }) => {
+    const doc = getControllerDoc(params.company, params.controller)
+    if (!doc) return { meta: [] }
+    
+    const { meta } = doc
+    const title = `${meta.name} by ${meta.maker} - Review & Specs | Arcade.Wiki`
+    const description = `Detailed review and specifications for the ${meta.name} arcade controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ''}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ''}${meta.priceUSD ? `, priced at $${meta.priceUSD}` : ''}.`
+    const url = `https://arcade.wiki/controllers/${params.company}/${params.controller}`
+    
+    // JSON-LD Structured Data
+    const structuredData = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: meta.name,
+      brand: {
+        '@type': 'Brand',
+        name: meta.maker,
+      },
+      description: description,
+      ...(meta.priceUSD && {
+        offers: {
+          '@type': 'Offer',
+          price: meta.priceUSD,
+          priceCurrency: 'USD',
+          availability: meta.currentlySold ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+          ...(meta.link && { url: meta.link }),
+        },
+      }),
+      ...(meta.releaseYear && {
+        releaseDate: `${meta.releaseYear}-01-01`,
+      }),
+      ...(meta.weightGrams && {
+        weight: {
+          '@type': 'QuantitativeValue',
+          value: meta.weightGrams,
+          unitCode: 'GRM',
+        },
+      }),
+      ...(meta.dimensionsMm && {
+        depth: {
+          '@type': 'QuantitativeValue',
+          value: meta.dimensionsMm.depth,
+          unitCode: 'MMT',
+        },
+        width: {
+          '@type': 'QuantitativeValue',
+          value: meta.dimensionsMm.width,
+          unitCode: 'MMT',
+        },
+        height: {
+          '@type': 'QuantitativeValue',
+          value: meta.dimensionsMm.height,
+          unitCode: 'MMT',
+        },
+      }),
+    }
+    
+    return {
+      meta: [
+        { title },
+        { name: 'description', content: description },
+        { name: 'keywords', content: `${meta.name}, ${meta.maker}, arcade controller, arcade stick, ${meta.buttonType || ''}, fightstick` },
+        // Open Graph
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: url },
+        { property: 'og:type', content: 'product' },
+        { property: 'product:brand', content: meta.maker },
+        ...(meta.priceUSD ? [
+          { property: 'product:price:amount', content: String(meta.priceUSD) },
+          { property: 'product:price:currency', content: 'USD' },
+        ] : []),
+        ...(meta.currentlySold !== undefined ? [
+          { property: 'product:availability', content: meta.currentlySold ? 'in stock' : 'out of stock' },
+        ] : []),
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+      ],
+      links: [
+        { rel: 'canonical', href: url },
+      ],
+      scripts: [
+        {
+          type: 'application/ld+json',
+          children: JSON.stringify(structuredData),
+        },
+      ],
+    }
+  },
 })
 
 function ControllerContentPage() {

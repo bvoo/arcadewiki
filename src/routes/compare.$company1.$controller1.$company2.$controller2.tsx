@@ -9,6 +9,36 @@ import { isBookmarked, toggleBookmark } from '../lib/bookmarks'
 
 export const Route = createFileRoute('/compare/$company1/$controller1/$company2/$controller2')({
   component: ComparisonPage,
+  head: ({ params }) => {
+    const doc1 = getControllerDoc(params.company1, params.controller1)
+    const doc2 = getControllerDoc(params.company2, params.controller2)
+    
+    if (!doc1 || !doc2) return { meta: [] }
+    
+    const title = `Compare ${doc1.meta.name} vs ${doc2.meta.name} | Arcade.Wiki`
+    const description = `Side-by-side comparison of ${doc1.meta.name} by ${doc1.meta.maker} and ${doc2.meta.name} by ${doc2.meta.maker}. Compare specs, features, and prices.`
+    const url = `https://arcade.wiki/compare/${params.company1}/${params.controller1}/${params.company2}/${params.controller2}`
+    
+    return {
+      meta: [
+        { title },
+        { name: 'description', content: description },
+        { name: 'keywords', content: `${doc1.meta.name}, ${doc2.meta.name}, compare arcade controllers, arcade stick comparison, ${doc1.meta.maker}, ${doc2.meta.maker}` },
+        // Open Graph
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: url },
+        { property: 'og:type', content: 'website' },
+        // Twitter Card
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+      ],
+      links: [
+        { rel: 'canonical', href: url },
+      ],
+    }
+  },
 })
 
 function ComparisonPage() {

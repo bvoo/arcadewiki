@@ -14,7 +14,25 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'Arcade.Wiki',
+        title: 'Arcade.Wiki - Arcade Controller Database',
+      },
+      {
+        name: 'description',
+        content: 'Comprehensive database of arcade-style controllers. Compare specs, get the full picture, and find the perfect controller.',
+      },
+      // Open Graph
+      {
+        property: 'og:site_name',
+        content: 'Arcade.Wiki',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      // Twitter Card
+      {
+        name: 'twitter:card',
+        content: 'summary_large_image',
       },
     ],
     links: [

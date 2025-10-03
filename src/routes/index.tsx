@@ -10,6 +10,53 @@ import { ComparisonBar } from '@/components/ComparisonBar'
 
 export const Route = createFileRoute('/')({
   component: ControllersHome,
+  head: () => ({
+    meta: [
+      {
+        title: 'Arcade Controller Database - Compare Controllers | Arcade.Wiki',
+      },
+      {
+        name: 'description',
+        content: 'Browse and compare arcade controllers and fighting sticks. Find detailed specs, reviews, and prices for all major controllers.',
+      },
+      {
+        name: 'keywords',
+        content: 'arcade controller, arcade stick, fighting stick, sanwa, hori, qanba, madcatz, fightstick, gaming controller, hitbox',
+      },
+      // Open Graph
+      {
+        property: 'og:title',
+        content: 'Arcade Controller Database - Compare Controllers',
+      },
+      {
+        property: 'og:description',
+        content: 'Browse and compare arcade controllers and fighting sticks. Find detailed specs and prices for all major brands.',
+      },
+      {
+        property: 'og:url',
+        content: 'https://arcade.wiki/',
+      },
+      {
+        property: 'og:type',
+        content: 'website',
+      },
+      // Twitter Card
+      {
+        name: 'twitter:title',
+        content: 'Arcade Controller Database - Compare Controllers',
+      },
+      {
+        name: 'twitter:description',
+        content: 'Browse and compare arcade controllers and fighting sticks. Find detailed specs and prices for all major brands.',
+      },
+    ],
+    links: [
+      {
+        rel: 'canonical',
+        href: 'https://arcade.wiki/',
+      },
+    ],
+  }),
 })
 
 function ControllersHome() {
