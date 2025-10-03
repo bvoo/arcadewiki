@@ -28,6 +28,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
   Table,
   TableBody,
   TableCell,
@@ -429,17 +436,21 @@ export function ControllersTable({
                 {table.getPageCount()}
               </strong>
             </span>
-            <select
-              value={table.getState().pagination.pageSize}
-              onChange={(e) => table.setPageSize(Number(e.target.value))}
-              className="px-2 py-1 rounded-md border border-border bg-background focus:ring-2 focus:ring-ring"
+            <Select
+              value={String(table.getState().pagination.pageSize)}
+              onValueChange={(value) => table.setPageSize(Number(value))}
             >
-              {[10, 20, 30, 40, 50].map((s) => (
-                <option key={s} value={s}>
-                  Show {s}
-                </option>
-              ))}
-            </select>
+              <SelectTrigger size="sm" className="w-[120px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {[10, 20, 30, 40, 50].map((s) => (
+                  <SelectItem key={s} value={String(s)}>
+                    Show {s}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </>
       )}
