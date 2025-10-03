@@ -1,19 +1,14 @@
+import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { getControllerDoc } from '../lib/controllers.content'
-import { Card, CardContent } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { ChevronDown, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { EditOnGitHub } from '@/components/EditOnGitHub'
 import { SiteHeader } from '@/components/SiteHeader'
 import { SimilarControllers } from '@/components/SimilarControllers'
 import { getSimilarControllers } from '../lib/similarControllers'
+import { isBookmarked, toggleBookmark } from '../lib/bookmarks'
+import { InfoCard } from '@/components/InfoCard'
 
 export const Route = createFileRoute('/controllers/$company/$controller')({
   component: ControllerContentPage,
@@ -34,8 +29,6 @@ function ControllerContentPage() {
 
   const { meta, Component } = doc
 
-  const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
-
   const switchItems = Array.isArray(meta.switchType)
     ? meta.switchType
     : meta.switchType
@@ -43,6 +36,12 @@ function ControllerContentPage() {
       : []
 
   const similarControllers = getSimilarControllers(doc, 3)
+  const [bookmarked, setBookmarked] = React.useState(() => isBookmarked(company, controller))
+
+  const handleBookmarkToggle = () => {
+    const newState = toggleBookmark(company, controller)
+    setBookmarked(newState)
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -62,101 +61,18 @@ function ControllerContentPage() {
         }
       />
       <div className="p-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold">{meta.name}</h1>
-          <p className="text-muted-foreground">{meta.maker}</p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold">{meta.name}</h1>
+        <p className="text-muted-foreground">{meta.maker}</p>
       </div>
       <div className="h-4" />
       <div className="lg:flow-root">
-        <Card className="lg:float-right lg:w-[28rem] lg:ml-6 lg:mb-2">
-          <CardContent className="p-3 grid gap-2 text-sm">
-            {meta.currentlySold !== undefined ? (
-              <div className="flex items-center gap-2">
-                <span className="text-muted-foreground">Availability:</span>
-                <Badge variant={meta.currentlySold ? 'default' : 'secondary'}>
-                  {meta.currentlySold ? 'In stock' : 'Not sold'}
-                </Badge>
-              </div>
-            ) : null}
-            <div className="flex items-center gap-2">
-              <span className="text-muted-foreground">Buttons:</span>
-              {(() => {
-                const v = String(meta.buttonType || '').toLowerCase()
-                const label = v ? v.charAt(0).toUpperCase() + v.slice(1) : ''
-                const variant = v === 'digital' ? 'default' : 'secondary'
-                return label ? (
-                  <Badge variant={variant as any} className="font-mono font-bold">{label}</Badge>
-                ) : null
-              })()}
-            </div>
-          
-
-          <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Switches:</span>
-            {switchItems.length ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="justify-between max-w-full min-w-32">
-                    <span className="truncate" title={switchItems.length === 1 ? switchItems[0] : `${switchItems.length} types`}>
-                      {switchItems.length === 1 ? switchItems[0] : `${switchItems.length} types`}
-                    </span>
-                    <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-[var(--radix-dropdown-menu-trigger-width)]">
-                  {switchItems.map((it, i) => (
-                    <DropdownMenuItem key={i}>{it}</DropdownMenuItem>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
-          </div>
-
-          <div><span className="text-muted-foreground">Release Year:</span> <span className="tabular-nums font-mono">{meta.releaseYear}</span></div>
-
-          <div>
-            <span className="text-muted-foreground">Weight:</span>{' '}
-            {meta.weightGrams ? (
-              <span className="tabular-nums font-mono">{meta.weightGrams} <span className="text-muted-foreground text-xs">g</span></span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
-          </div>
-
-          <div>
-            <span className="text-muted-foreground">Dimensions:</span>{' '}
-            {meta.dimensionsMm ? (
-              <span className="tabular-nums font-mono">
-                {meta.dimensionsMm.width} × {meta.dimensionsMm.depth} × {meta.dimensionsMm.height}
-                <span className="text-muted-foreground text-xs ml-1">mm</span>
-              </span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
-          </div>
-
-          <div>
-            <span className="text-muted-foreground">Price:</span>{' '}
-            {meta.priceUSD ? (
-              <span className="tabular-nums font-mono">{usd.format(meta.priceUSD)}</span>
-            ) : (
-              <span className="text-muted-foreground">—</span>
-            )}
-          </div>
-
-            {meta.link ? (
-              <div>
-                <Button asChild variant="outline" size="sm">
-                  <a href={meta.link} target="_blank" rel="noreferrer">Official link</a>
-                </Button>
-              </div>
-            ) : null}
-          </CardContent>
-        </Card>
+        <InfoCard
+          meta={meta}
+          bookmarked={bookmarked}
+          onBookmarkToggle={handleBookmarkToggle}
+          switchItems={switchItems}
+        />
         <div className="h-4 lg:h-0" />
         <article className="prose prose-invert max-w-none">
           <Component />
