@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ArrowLeft } from 'lucide-react'
 import { EditOnGitHub } from '@/components/EditOnGitHub'
 import { SiteHeader } from '@/components/SiteHeader'
 
@@ -50,6 +50,14 @@ function ControllerContentPage() {
           { label: meta.maker, href: '/' },
           { label: meta.name },
         ]}
+        actions={
+          <Button asChild variant="ghost" size="sm">
+            <a href="/">
+              <ArrowLeft className="size-4 mr-2" />
+              Back to List
+            </a>
+          </Button>
+        }
       />
       <div className="p-6">
       <div className="flex items-center justify-between gap-4">
