@@ -17,7 +17,7 @@ export const Route = createFileRoute(
 
 		if (!doc1 || !doc2) return { meta: [] };
 
-		const title = `Compare ${doc1.meta.name} vs ${doc2.meta.name} | Arcade.Wiki`;
+		const title = `Compare ${doc1.meta.name} vs ${doc2.meta.name} | arcade.wiki`;
 		const description = `Side-by-side comparison of ${doc1.meta.name} by ${doc1.meta.maker} and ${doc2.meta.name} by ${doc2.meta.maker}. Compare specs, features, and prices.`;
 		const url = `https://arcade.wiki/compare/${params.company1}/${params.controller1}/${params.company2}/${params.controller2}`;
 

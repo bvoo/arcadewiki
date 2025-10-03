@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
 	head: () => ({
 		meta: [
 			{
-				title: "Arcade Controller Database - Compare Controllers | Arcade.Wiki",
+				title: "Arcade Controller Database - Compare Controllers | arcade.wiki",
 			},
 			{
 				name: "description",

@@ -15,7 +15,7 @@ export const Route = createRootRoute({
 				content: "width=device-width, initial-scale=1",
 			},
 			{
-				title: "Arcade.Wiki - Arcade Controller Database",
+				title: "arcade.wiki - Arcade Controller Database",
 			},
 			{
 				name: "description",
@@ -25,7 +25,7 @@ export const Route = createRootRoute({
 			// Open Graph
 			{
 				property: "og:site_name",
-				content: "Arcade.Wiki",
+				content: "arcade.wiki",
 			},
 			{
 				property: "og:type",

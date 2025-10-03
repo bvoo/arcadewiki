@@ -17,8 +17,8 @@ export const Route = createFileRoute("/controllers/$company/$controller")({
 		if (!doc) return { meta: [] };
 
 		const { meta } = doc;
-		const title = `${meta.name} by ${meta.maker} - Review & Specs | Arcade.Wiki`;
-		const description = `Detailed review and specifications for the ${meta.name} arcade controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ""}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ""}${meta.priceUSD ? `, priced at $${meta.priceUSD}` : ""}.`;
+		const title = `${meta.name} by ${meta.maker} | arcade.wiki`;
+		const description = `Detailed information for the ${meta.name} controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ""}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ""}${meta.priceUSD ? `, priced at $${meta.priceUSD}` : ""}.`;
 		const url = `https://arcade.wiki/controllers/${params.company}/${params.controller}`;
 		const ogImageUrl = `https://arcade.wiki/og/${params.company}/${params.controller}.png`;
 

@@ -20,7 +20,7 @@ export function SiteHeader({ breadcrumbs, actions }: SiteHeaderProps) {
 					className="font-mono flex items-center gap-2 font-bold text-lg hover:opacity-80 transition-opacity"
 				>
 					{/* todo: figure out logo */}
-					<span>Arcade.Wiki</span>
+					<span>arcade.wiki</span>
 				</Link>
 				{breadcrumbs && breadcrumbs.length > 0 && (
 					<Breadcrumbs items={breadcrumbs} />
