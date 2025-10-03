@@ -1,0 +1,129 @@
+import React from 'react'
+import { createFileRoute } from '@tanstack/react-router'
+import { getControllerDoc } from '../lib/controllers.content'
+import { Button } from '@/components/ui/button'
+import { ArrowLeft } from 'lucide-react'
+import { SiteHeader } from '@/components/SiteHeader'
+import { InfoCard } from '@/components/InfoCard'
+import { isBookmarked, toggleBookmark } from '../lib/bookmarks'
+
+export const Route = createFileRoute('/compare/$company1/$controller1/$company2/$controller2')({
+  component: ComparisonPage,
+})
+
+function ComparisonPage() {
+  const { company1, controller1, company2, controller2 } = Route.useParams()
+  
+  const doc1 = getControllerDoc(company1, controller1)
+  const doc2 = getControllerDoc(company2, controller2)
+
+  if (!doc1 || !doc2) {
+    return (
+      <div className="min-h-screen bg-background text-foreground p-6">
+        <h1 className="text-xl font-bold">Controllers not found</h1>
+        <Button asChild variant="ghost" className="mt-4">
+          <a href="/">
+            <ArrowLeft className="size-4 mr-2" />
+            Back to List
+          </a>
+        </Button>
+      </div>
+    )
+  }
+
+  const { meta: meta1, Component: Component1 } = doc1
+  const { meta: meta2, Component: Component2 } = doc2
+
+  const switchItems1 = Array.isArray(meta1.switchType)
+    ? meta1.switchType
+    : meta1.switchType
+      ? [meta1.switchType]
+      : []
+
+  const switchItems2 = Array.isArray(meta2.switchType)
+    ? meta2.switchType
+    : meta2.switchType
+      ? [meta2.switchType]
+      : []
+
+  const [bookmarked1, setBookmarked1] = React.useState(() => isBookmarked(company1, controller1))
+  const [bookmarked2, setBookmarked2] = React.useState(() => isBookmarked(company2, controller2))
+
+  const handleBookmarkToggle1 = () => {
+    const newState = toggleBookmark(company1, controller1)
+    setBookmarked1(newState)
+  }
+
+  const handleBookmarkToggle2 = () => {
+    const newState = toggleBookmark(company2, controller2)
+    setBookmarked2(newState)
+  }
+
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <SiteHeader 
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: meta1.maker, href: '/' },
+          { label: meta1.name, href: `/controllers/${company1}/${controller1}` },
+          { label: 'vs' },
+          { label: meta2.maker, href: '/' },
+          { label: meta2.name, href: `/controllers/${company2}/${controller2}` },
+        ]}
+        actions={
+          <Button asChild variant="ghost" size="sm">
+            <a href="/">
+              <ArrowLeft className="size-4 mr-2" />
+              Back to List
+            </a>
+          </Button>
+        }
+      />
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Controller Comparison</h1>
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr_1px_1fr] gap-6">
+          <div className="flex flex-col">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold">{meta1.name}</h2>
+              <p className="text-muted-foreground">{meta1.maker}</p>
+            </div>
+            <article className="prose prose-invert max-w-none mb-4 flex-1">
+              <Component1 />
+            </article>
+            <div className="w-1/2">
+              <InfoCard
+                meta={meta1}
+                bookmarked={bookmarked1}
+                onBookmarkToggle={handleBookmarkToggle1}
+                switchItems={switchItems1}
+              />
+            </div>
+          </div>
+
+          <div className="hidden lg:block bg-border"></div>
+
+          <div className="flex flex-col">
+            <div className="mb-4">
+              <h2 className="text-xl font-bold">{meta2.name}</h2>
+              <p className="text-muted-foreground">{meta2.maker}</p>
+            </div>
+            <article className="prose prose-invert max-w-none mb-4 flex-1">
+              <Component2 />
+            </article>
+            <div className="w-1/2">
+              <InfoCard
+                meta={meta2}
+                bookmarked={bookmarked2}
+                onBookmarkToggle={handleBookmarkToggle2}
+                switchItems={switchItems2}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

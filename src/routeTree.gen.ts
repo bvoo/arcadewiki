@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ControllersCompanyControllerRouteImport } from './routes/controllers.$company.$controller'
+import { Route as CompareCompany1Controller1Company2Controller2RouteImport } from './routes/compare.$company1.$controller1.$company2.$controller2'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,31 +24,51 @@ const ControllersCompanyControllerRoute =
     path: '/controllers/$company/$controller',
     getParentRoute: () => rootRouteImport,
   } as any)
+const CompareCompany1Controller1Company2Controller2Route =
+  CompareCompany1Controller1Company2Controller2RouteImport.update({
+    id: '/compare/$company1/$controller1/$company2/$controller2',
+    path: '/compare/$company1/$controller1/$company2/$controller2',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/controllers/$company/$controller': typeof ControllersCompanyControllerRoute
+  '/compare/$company1/$controller1/$company2/$controller2': typeof CompareCompany1Controller1Company2Controller2Route
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/controllers/$company/$controller': typeof ControllersCompanyControllerRoute
+  '/compare/$company1/$controller1/$company2/$controller2': typeof CompareCompany1Controller1Company2Controller2Route
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/controllers/$company/$controller': typeof ControllersCompanyControllerRoute
+  '/compare/$company1/$controller1/$company2/$controller2': typeof CompareCompany1Controller1Company2Controller2Route
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/controllers/$company/$controller'
+  fullPaths:
+    | '/'
+    | '/controllers/$company/$controller'
+    | '/compare/$company1/$controller1/$company2/$controller2'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/controllers/$company/$controller'
-  id: '__root__' | '/' | '/controllers/$company/$controller'
+  to:
+    | '/'
+    | '/controllers/$company/$controller'
+    | '/compare/$company1/$controller1/$company2/$controller2'
+  id:
+    | '__root__'
+    | '/'
+    | '/controllers/$company/$controller'
+    | '/compare/$company1/$controller1/$company2/$controller2'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ControllersCompanyControllerRoute: typeof ControllersCompanyControllerRoute
+  CompareCompany1Controller1Company2Controller2Route: typeof CompareCompany1Controller1Company2Controller2Route
 }
 
 declare module '@tanstack/react-router' {
@@ -66,12 +87,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ControllersCompanyControllerRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compare/$company1/$controller1/$company2/$controller2': {
+      id: '/compare/$company1/$controller1/$company2/$controller2'
+      path: '/compare/$company1/$controller1/$company2/$controller2'
+      fullPath: '/compare/$company1/$controller1/$company2/$controller2'
+      preLoaderRoute: typeof CompareCompany1Controller1Company2Controller2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ControllersCompanyControllerRoute: ControllersCompanyControllerRoute,
+  CompareCompany1Controller1Company2Controller2Route:
+    CompareCompany1Controller1Company2Controller2Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

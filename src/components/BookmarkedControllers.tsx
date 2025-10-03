@@ -8,7 +8,11 @@ import type { ColumnDef } from '@tanstack/react-table'
 
 type Row = Controller & { company: string; controller: string; slug: string }
 
-export function BookmarkedControllers() {
+interface BookmarkedControllersProps {
+  enableComparison?: boolean
+}
+
+export function BookmarkedControllers({ enableComparison = false }: BookmarkedControllersProps) {
   const [bookmarks, setBookmarks] = React.useState(getBookmarks())
   const [, forceUpdate] = React.useReducer(x => x + 1, 0)
 
@@ -81,6 +85,7 @@ export function BookmarkedControllers() {
         data={bookmarkedData}
         nameColumnOverride={nameColumnWithBookmark}
         hidePagination={true}
+        enableComparison={enableComparison}
       />
     </>
   )

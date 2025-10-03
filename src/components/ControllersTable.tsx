@@ -19,6 +19,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { ChevronDown, ChevronUp } from 'lucide-react'
+import { Checkbox } from '@/components/ui/checkbox'
+import { isInComparison, toggleComparison } from '../lib/comparison'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -42,17 +44,20 @@ interface ControllersTableProps {
   data?: Row[]
   nameColumnOverride?: ColumnDef<Controller, any>
   hidePagination?: boolean
+  enableComparison?: boolean
 }
 
 export function ControllersTable({ 
   globalFilter = '', 
   data,
   nameColumnOverride,
-  hidePagination = false
+  hidePagination = false,
+  enableComparison = false
 }: ControllersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([
     { id: 'releaseYear', desc: true },
   ])
+  const [, forceUpdate] = React.useReducer(x => x + 1, 0)
   const usd = React.useMemo(
     () => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }),
     [],
@@ -82,8 +87,34 @@ export function ControllersTable({
     return Math.max(14, max + 6)
   }, [rows])
 
+  React.useEffect(() => {
+    if (!enableComparison) return
+    const handleStorage = () => forceUpdate()
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [enableComparison])
+
+  const comparisonColumn: ColumnDef<Controller, any> = {
+    id: 'compare',
+    header: 'Compare',
+    cell: (info) => {
+      const r = info.row.original as Row
+      const checked = isInComparison(r.company, r.controller)
+      return (
+        <Checkbox
+          checked={checked}
+          onCheckedChange={() => {
+            toggleComparison(r.company, r.controller)
+            forceUpdate()
+          }}
+        />
+      )
+    },
+  }
+
   const columns = React.useMemo<ColumnDef<Controller, any>[]>(
     () => [
+      ...(enableComparison ? [comparisonColumn] : []),
       nameColumnOverride || {
         accessorKey: 'name',
         header: 'Name',
@@ -206,7 +237,7 @@ export function ControllersTable({
         },
       },
     ],
-    [nameColumnOverride],
+    [nameColumnOverride, enableComparison, comparisonColumn],
   )
 
   const table = useReactTable({

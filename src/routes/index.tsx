@@ -1,10 +1,12 @@
 import React from 'react'
 import { createFileRoute } from '@tanstack/react-router'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { EditOnGitHub } from '@/components/EditOnGitHub'
 import { SiteHeader } from '@/components/SiteHeader'
 import { BookmarkedControllers } from '@/components/BookmarkedControllers'
 import { ControllersTable } from '@/components/ControllersTable'
+import { ComparisonBar } from '@/components/ComparisonBar'
 
 export const Route = createFileRoute('/')({
   component: ControllersHome,
@@ -12,31 +14,43 @@ export const Route = createFileRoute('/')({
 
 function ControllersHome() {
   const [globalFilter, setGlobalFilter] = React.useState('')
+  const [comparisonEnabled, setComparisonEnabled] = React.useState(() => {
+    if (typeof window === 'undefined') return false
+    const stored = localStorage.getItem('comparison-enabled')
+    return stored === 'true'
+  })
+
+  const toggleComparison = () => {
+    const newValue = !comparisonEnabled
+    setComparisonEnabled(newValue)
+    localStorage.setItem('comparison-enabled', String(newValue))
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader />
       <div className="p-6">
-        <DebouncedInput
-          value={globalFilter}
-          onChange={(v) => setGlobalFilter(String(v))}
-          placeholder="Search controllers..."
-          className="w-full mb-4"
-          debounce={50}
-        />
-        <div className="grid lg:grid-cols-[1fr_384px] gap-4">
-          <div className="min-w-0">
-            <ControllersTable globalFilter={globalFilter} />
-          </div>
-          <div className="hidden lg:block">
-            <BookmarkedControllers />
-          </div>
+        <div className="flex gap-4 mb-4">
+          <DebouncedInput
+            value={globalFilter}
+            onChange={(v) => setGlobalFilter(String(v))}
+            placeholder="Search controllers..."
+            className="flex-1"
+            debounce={50}
+          />
+          <Button
+            variant={comparisonEnabled ? 'default' : 'outline'}
+            onClick={toggleComparison}
+          >
+            {comparisonEnabled ? 'Disable' : 'Enable'} Comparison
+          </Button>
         </div>
-        <div className="lg:hidden mt-4">
-          <BookmarkedControllers />
-        </div>
+        <BookmarkedControllers enableComparison={comparisonEnabled} />
+        <div className="h-4" />
+        <ControllersTable globalFilter={globalFilter} enableComparison={comparisonEnabled} />
         <EditOnGitHub filePath="src/routes/index.tsx" />
       </div>
+      <ComparisonBar />
     </div>
   )
 }
