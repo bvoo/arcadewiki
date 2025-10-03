@@ -44,7 +44,13 @@ function ControllerContentPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <SiteHeader />
+      <SiteHeader 
+        breadcrumbs={[
+          { label: 'Home', href: '/' },
+          { label: meta.maker, href: '/' },
+          { label: meta.name },
+        ]}
+      />
       <div className="p-6">
       <div className="flex items-center justify-between gap-4">
         <div>
