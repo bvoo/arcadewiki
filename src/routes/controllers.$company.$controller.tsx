@@ -12,6 +12,8 @@ import {
 import { ChevronDown, ArrowLeft } from 'lucide-react'
 import { EditOnGitHub } from '@/components/EditOnGitHub'
 import { SiteHeader } from '@/components/SiteHeader'
+import { SimilarControllers } from '@/components/SimilarControllers'
+import { getSimilarControllers } from '../lib/similarControllers'
 
 export const Route = createFileRoute('/controllers/$company/$controller')({
   component: ControllerContentPage,
@@ -32,15 +34,15 @@ function ControllerContentPage() {
 
   const { meta, Component } = doc
 
-  // Formatters
   const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 })
 
-  // Normalize switches to string[]
   const switchItems = Array.isArray(meta.switchType)
     ? meta.switchType
     : meta.switchType
       ? [meta.switchType]
       : []
+
+  const similarControllers = getSimilarControllers(doc, 3)
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -70,7 +72,6 @@ function ControllerContentPage() {
       <div className="lg:flow-root">
         <Card className="lg:float-right lg:w-[28rem] lg:ml-6 lg:mb-2">
           <CardContent className="p-3 grid gap-2 text-sm">
-            {/* Availability */}
             {meta.currentlySold !== undefined ? (
               <div className="flex items-center gap-2">
                 <span className="text-muted-foreground">Availability:</span>
@@ -79,7 +80,6 @@ function ControllerContentPage() {
                 </Badge>
               </div>
             ) : null}
-            {/* Buttons */}
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">Buttons:</span>
               {(() => {
@@ -93,7 +93,6 @@ function ControllerContentPage() {
             </div>
           
 
-          {/* Switches */}
           <div className="flex items-center gap-2">
             <span className="text-muted-foreground">Switches:</span>
             {switchItems.length ? (
@@ -117,10 +116,8 @@ function ControllerContentPage() {
             )}
           </div>
 
-          {/* Release Year */}
           <div><span className="text-muted-foreground">Release Year:</span> <span className="tabular-nums font-mono">{meta.releaseYear}</span></div>
 
-          {/* Weight */}
           <div>
             <span className="text-muted-foreground">Weight:</span>{' '}
             {meta.weightGrams ? (
@@ -130,7 +127,6 @@ function ControllerContentPage() {
             )}
           </div>
 
-          {/* Dimensions */}
           <div>
             <span className="text-muted-foreground">Dimensions:</span>{' '}
             {meta.dimensionsMm ? (
@@ -143,7 +139,6 @@ function ControllerContentPage() {
             )}
           </div>
 
-          {/* Price */}
           <div>
             <span className="text-muted-foreground">Price:</span>{' '}
             {meta.priceUSD ? (
@@ -153,7 +148,6 @@ function ControllerContentPage() {
             )}
           </div>
 
-            {/* Link */}
             {meta.link ? (
               <div>
                 <Button asChild variant="outline" size="sm">
@@ -167,6 +161,7 @@ function ControllerContentPage() {
         <article className="prose prose-invert max-w-none">
           <Component />
         </article>
+        <SimilarControllers controllers={similarControllers} />
         <EditOnGitHub filePath={`src/content/${company}/${controller}/index.mdx`} />
       </div>
       </div>
