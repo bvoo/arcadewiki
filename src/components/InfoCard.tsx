@@ -30,9 +30,9 @@ export function InfoCard({
   });
 
   return (
-    <Card className="lg:float-right lg:w-[28rem] lg:ml-6 lg:mb-2">
+    <Card className="w-full lg:max-w-[28rem] lg:mb-2">
       <CardContent className="p-3">
-        <div className="grid grid-cols-[1fr_auto] gap-4">
+        <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_auto] gap-4">
           {/* left col - details */}
           <div className="grid gap-2 text-sm">
             {meta.currentlySold !== undefined ? (
@@ -143,13 +143,13 @@ export function InfoCard({
             </div>
           </div>
 
-          {/* right col - buttons/Links */}
-          <div className="flex flex-col gap-2">
+          {/* right col - buttons/links */}
+          <div className="flex flex-col gap-2 xl:items-end">
             <Button
               variant="outline"
               size="sm"
               onClick={onBookmarkToggle}
-              className="gap-2 whitespace-nowrap"
+              className="gap-2 whitespace-nowrap w-full xl:w-auto"
             >
               <Bookmark
                 className={`size-4 ${bookmarked ? "fill-current" : ""}`}
@@ -158,7 +158,12 @@ export function InfoCard({
             </Button>
 
             {meta.link ? (
-              <Button asChild variant="outline" size="sm">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="w-full xl:w-auto"
+              >
                 <a href={meta.link} target="_blank" rel="noreferrer">
                   Official link
                 </a>
