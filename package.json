@@ -5,13 +5,14 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "start": "node .output/server/index.mjs",
-    "build": "tsx scripts/generate-og-images.ts && vite build",
+    "build": "pnpm run generate:og && pnpm run generate:sitemap && vite build",
     "serve": "vite preview",
     "test": "vitest run",
     "format": "biome format",
     "lint": "biome lint",
     "check": "biome check",
-    "generate:og": "tsx scripts/generate-og-images.ts"
+    "generate:og": "tsx scripts/generate-og-images.ts",
+    "generate:sitemap": "tsx scripts/generate-sitemap.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.6.0",
