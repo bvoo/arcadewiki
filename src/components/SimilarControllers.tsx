@@ -33,7 +33,7 @@ export function SimilarControllers({ controllers }: SimilarControllersProps) {
             ? buttonType.charAt(0).toUpperCase() + buttonType.slice(1)
             : "";
           const buttonVariant: "default" | "secondary" =
-            buttonType === "digital" ? "default" : "secondary";
+            buttonType === "analog" ? "default" : "secondary";
 
           return (
             <a

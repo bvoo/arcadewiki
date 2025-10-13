@@ -50,7 +50,7 @@ export function InfoCard({
                 const v = String(meta.buttonType || "").toLowerCase();
                 const label = v ? v.charAt(0).toUpperCase() + v.slice(1) : "";
                 const variant: "default" | "secondary" =
-                  v === "digital" ? "default" : "secondary";
+                  v === "analog" ? "default" : "secondary";
                 return label ? (
                   <Badge variant={variant} className="font-mono font-bold">
                     {label}

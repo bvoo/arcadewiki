@@ -181,7 +181,7 @@ export function ControllersTable({
           const v = String(getValue<string>()).toLowerCase();
           const label = v.charAt(0).toUpperCase() + v.slice(1);
           const variant: "default" | "secondary" =
-            v === "digital" ? "default" : "secondary";
+            v === "analog" ? "default" : "secondary";
           return (
             <Badge variant={variant} className="font-mono font-bold">
               {label}

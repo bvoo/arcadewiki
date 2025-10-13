@@ -82,7 +82,7 @@ export function ControllerCard({
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Button Type</span>
           <Badge
-            variant={buttonType === "digital" ? "default" : "secondary"}
+            variant={buttonType === "analog" ? "default" : "secondary"}
             className="font-mono font-bold"
           >
             {buttonType.charAt(0).toUpperCase() + buttonType.slice(1)}
