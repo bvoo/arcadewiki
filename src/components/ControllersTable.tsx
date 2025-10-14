@@ -17,16 +17,9 @@ import {
 import React from "react";
 
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { ControllerTableView } from "./ControllerTableView";
-import { ChevronDown } from "lucide-react";
+import { SwitchTypeDropdown } from "./SwitchTypeDropdown";
 import { getButtonTypeBadge, type ControllerWithSlug } from "../data/controllers";
 import { isInComparison, toggleComparison } from "../lib/comparison";
 import { getAllControllerDocs } from "../lib/controllers.content";
@@ -181,32 +174,11 @@ export function ControllersTable({
           const summary =
             items.length === 1 ? items[0] : `${items.length} types`;
           return (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="justify-between max-w-full"
-                  style={{ width: `clamp(1ch, ${maxSwitchChars}ch, 100%)` }}
-                >
-                  <span className="truncate" title={summary}>
-                    {summary}
-                  </span>
-                  <ChevronDown
-                    className="size-4 shrink-0 text-muted-foreground"
-                    aria-hidden
-                  />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                align="start"
-                className="w-[var(--radix-dropdown-menu-trigger-width)]"
-              >
-                {items.map((it) => (
-                  <DropdownMenuItem key={it}>{it}</DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <SwitchTypeDropdown
+              summary={summary}
+              items={items}
+              maxChars={maxSwitchChars}
+            />
           );
         },
       },

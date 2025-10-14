@@ -1,14 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Bookmark, ChevronDown } from "lucide-react";
+import { Bookmark } from "lucide-react";
 import { getButtonTypeBadge, type ControllerMeta } from "../data/controllers";
+import { SwitchTypeDropdown } from "./SwitchTypeDropdown";
 
 interface InfoCardProps {
   meta: ControllerMeta;
@@ -59,40 +54,15 @@ export function InfoCard({
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">Switches:</span>
               {switchItems.length ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="justify-between max-w-full min-w-32"
-                    >
-                      <span
-                        className="truncate"
-                        title={
-                          switchItems.length === 1
-                            ? switchItems[0]
-                            : `${switchItems.length} types`
-                        }
-                      >
-                        {switchItems.length === 1
-                          ? switchItems[0]
-                          : `${switchItems.length} types`}
-                      </span>
-                      <ChevronDown
-                        className="size-4 shrink-0 text-muted-foreground"
-                        aria-hidden
-                      />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    className="w-[var(--radix-dropdown-menu-trigger-width)]"
-                  >
-                    {switchItems.map((it) => (
-                      <DropdownMenuItem key={it}>{it}</DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <SwitchTypeDropdown
+                  summary={
+                    switchItems.length === 1
+                      ? switchItems[0]
+                      : `${switchItems.length} types`
+                  }
+                  items={switchItems}
+                  buttonClassName="justify-between max-w-full min-w-32"
+                />
               ) : (
                 <span className="text-muted-foreground">—</span>
               )}
