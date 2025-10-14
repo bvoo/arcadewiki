@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Browse and compare arcade controllers and fightsticks. Find detailed specs and prices for all major brands.",
+          "Browse and compare arcade controllers and fightsticks. Find detailed specs and prices for all major controllers.",
       },
       {
         property: "og:url",
@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content:
-          "Browse and compare arcade controllers and fightsticks. Find detailed specs and prices for all major brands.",
+          "Browse and compare arcade controllers and fightsticks. Find detailed specs and prices for all major controllers.",
       },
     ],
     links: [
