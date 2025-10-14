@@ -3,10 +3,10 @@ import { getAllControllerDocs } from "@/lib/controllers.content";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Bookmark } from "lucide-react";
 import React from "react";
-import type { Controller } from "../data/controllers";
+import type { ControllerWithSlug } from "../data/controllers";
 import { ControllersTable } from "./ControllersTable";
 
-type Row = Controller & { company: string; controller: string; slug: string };
+type Row = ControllerWithSlug;
 
 interface BookmarkedControllersProps {
   enableComparison?: boolean;
@@ -30,7 +30,7 @@ export function BookmarkedControllers({
   }, []);
 
   const allDocs = getAllControllerDocs();
-  const bookmarkedData: Row[] = React.useMemo(() => {
+  const bookmarkedData: ControllerWithSlug[] = React.useMemo(() => {
     return bookmarks
       .map((b) => {
         const doc = allDocs.find(
@@ -40,17 +40,15 @@ export function BookmarkedControllers({
         if (!doc) return null;
         return {
           ...doc.meta,
-          company: doc.meta.company,
-          controller: doc.meta.controller,
           slug: doc.slug,
-        };
+        } satisfies ControllerWithSlug;
       })
-      .filter(Boolean) as Row[];
+      .filter(Boolean) as ControllerWithSlug[];
   }, [bookmarks, allDocs]);
 
   if (bookmarkedData.length === 0) return null;
 
-  const nameColumnWithBookmark: ColumnDef<Controller, unknown> = {
+  const nameColumnWithBookmark: ColumnDef<Row, unknown> = {
     accessorKey: "name",
     header: "Name",
     cell: (info) => {

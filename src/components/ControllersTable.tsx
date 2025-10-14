@@ -43,7 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import type { Controller } from "../data/controllers";
+import type { ControllerWithSlug } from "../data/controllers";
 import { isInComparison, toggleComparison } from "../lib/comparison";
 import { getAllControllerDocs } from "../lib/controllers.content";
 
@@ -56,12 +56,12 @@ declare module "@tanstack/react-table" {
   }
 }
 
-type Row = Controller & { company: string; controller: string; slug: string };
+type Row = ControllerWithSlug;
 
 interface ControllersTableProps {
   globalFilter?: string;
   data?: Row[];
-  nameColumnOverride?: ColumnDef<Controller, unknown>;
+  nameColumnOverride?: ColumnDef<Row, unknown>;
   hidePagination?: boolean;
   enableComparison?: boolean;
 }
@@ -90,8 +90,6 @@ export function ControllersTable({
     () =>
       getAllControllerDocs().map((d) => ({
         ...d.meta,
-        company: d.meta.company,
-        controller: d.meta.controller,
         slug: d.slug,
       })),
     [],
@@ -117,7 +115,7 @@ export function ControllersTable({
     return () => window.removeEventListener("storage", handleStorage);
   }, [enableComparison]);
 
-  const comparisonColumn: ColumnDef<Controller, unknown> = React.useMemo(
+  const comparisonColumn: ColumnDef<Row, unknown> = React.useMemo(
     () => ({
       id: "compare",
       header: "Compare",
@@ -138,7 +136,7 @@ export function ControllersTable({
     [],
   );
 
-  const columns = React.useMemo<ColumnDef<Controller, unknown>[]>(
+  const columns = React.useMemo<ColumnDef<Row, unknown>[]>(
     () => [
       ...(enableComparison ? [comparisonColumn] : []),
       nameColumnOverride || {
@@ -305,7 +303,7 @@ export function ControllersTable({
     ],
   );
 
-  const table = useReactTable({
+  const table = useReactTable<Row>({
     data: rows,
     columns,
     filterFns: { fuzzy: fuzzyFilter },

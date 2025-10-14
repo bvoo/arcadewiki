@@ -1,12 +1,9 @@
-import type { Controller } from "../data/controllers";
+import type { ControllerMeta, ControllerWithSlug } from "../data/controllers";
 
-export type ControllerFrontmatter = Controller & {
-  company: string;
-  controller: string;
-};
+export type ControllerFrontmatter = ControllerMeta;
 
 export type ControllerDoc = {
-  slug: string; // company/controller
+  slug: ControllerWithSlug["slug"]; // company/controller
   meta: ControllerFrontmatter;
   Component: React.ComponentType<Record<string, never>>;
 };

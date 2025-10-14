@@ -116,15 +116,7 @@ function MakerPage() {
             <ControllerCard
               key={doc.slug}
               slug={doc.slug}
-              name={doc.meta.name}
-              releaseYear={doc.meta.releaseYear}
-              buttonType={doc.meta.buttonType}
-              weightGrams={doc.meta.weightGrams}
-              dimensionsMm={doc.meta.dimensionsMm}
-              priceUSD={doc.meta.priceUSD}
-              currentlySold={doc.meta.currentlySold}
-              company={doc.meta.company}
-              controller={doc.meta.controller}
+              {...doc.meta}
             />
           ))}
         </div>

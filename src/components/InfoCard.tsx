@@ -8,10 +8,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Bookmark, ChevronDown } from "lucide-react";
-import type { Controller } from "../data/controllers";
+import type { ControllerMeta } from "../data/controllers";
 
 interface InfoCardProps {
-  meta: Controller;
+  meta: ControllerMeta;
   bookmarked: boolean;
   onBookmarkToggle: () => void;
   switchItems: string[];

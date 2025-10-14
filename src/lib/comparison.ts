@@ -1,10 +1,9 @@
+import type { ControllerIdentity } from "../data/controllers";
+
 const COMPARISON_KEY = "controller-comparison";
 const MAX_COMPARISON = 2;
 
-export interface ComparisonItem {
-  company: string;
-  controller: string;
-}
+export type ComparisonItem = ControllerIdentity;
 
 export function getComparison(): ComparisonItem[] {
   if (typeof window === "undefined") return [];

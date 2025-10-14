@@ -1,20 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import type { ControllerWithSlug } from "@/data/controllers";
 import { ArrowRight } from "lucide-react";
 
-interface ControllerCardProps {
-  slug: string;
-  name: string;
-  releaseYear: number;
-  buttonType: "digital" | "analog";
-  weightGrams?: number;
-  dimensionsMm?: { width: number; depth: number; height: number };
-  priceUSD?: number;
-  currentlySold: boolean;
-  company: string;
-  controller: string;
-}
+type ControllerCardProps = ControllerWithSlug;
 
 export function ControllerCard({
   slug,
