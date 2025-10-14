@@ -13,7 +13,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Arcade Controller Database - Compare Controllers | arcade.wiki",
+        title: "Arcade Controller Database - arcade.wiki",
       },
       {
         name: "description",
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/")({
       // Open Graph
       {
         property: "og:title",
-        content: "Arcade Controller Database - Compare Controllers",
+        content: "Arcade Controller Database - arcade.wiki",
       },
       {
         property: "og:description",
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/")({
       // Twitter Card
       {
         name: "twitter:title",
-        content: "Arcade Controller Database - Compare Controllers",
+        content: "Arcade Controller Database - arcade.wiki",
       },
       {
         name: "twitter:description",
