@@ -327,7 +327,9 @@ export function ControllersTable({
                   {hg.headers.map((h) => {
                     const isRightAligned =
                       h.column.id === "weightGrams" ||
-                      h.column.id === "dimensionsMm";
+                      h.column.id === "dimensionsMm" ||
+                      h.column.id === "releaseYear" ||
+                      h.column.id === "priceUSD";
                     return (
                       <TableHead
                         key={h.id}
