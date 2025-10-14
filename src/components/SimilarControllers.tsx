@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
+import { getButtonTypeBadge } from "../data/controllers";
 import type { SimilarController } from "../lib/similarControllers";
 
 interface SimilarControllersProps {
@@ -28,12 +29,8 @@ export function SimilarControllers({ controllers }: SimilarControllersProps) {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {controllers.map(({ doc, reasons }) => {
           const { meta } = doc;
-          const buttonType = String(meta.buttonType || "").toLowerCase();
-          const buttonLabel = buttonType
-            ? buttonType.charAt(0).toUpperCase() + buttonType.slice(1)
-            : "";
-          const buttonVariant: "default" | "secondary" =
-            buttonType === "analog" ? "default" : "secondary";
+          const { label: buttonLabel, variant: buttonVariant } =
+            getButtonTypeBadge(meta.buttonType);
 
           return (
             <a

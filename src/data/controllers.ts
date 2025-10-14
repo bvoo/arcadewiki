@@ -28,3 +28,15 @@ export type ControllerMeta = Controller & ControllerIdentity;
 export type ControllerWithSlug = ControllerMeta & {
   slug: string;
 };
+
+export function getButtonTypeBadge(
+  buttonType?: Controller["buttonType"] | null,
+) {
+  const normalized = (buttonType ?? "").toString().toLowerCase();
+  const label = normalized
+    ? normalized.charAt(0).toUpperCase() + normalized.slice(1)
+    : "";
+  const variant: "default" | "secondary" =
+    normalized === "analog" ? "default" : "secondary";
+  return { label, variant };
+}

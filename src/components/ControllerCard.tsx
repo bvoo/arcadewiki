@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ControllerWithSlug } from "@/data/controllers";
+import { getButtonTypeBadge, type ControllerWithSlug } from "@/data/controllers";
 import { ArrowRight } from "lucide-react";
 
 type ControllerCardProps = ControllerWithSlug;
@@ -23,6 +23,8 @@ export function ControllerCard({
     currency: "USD",
     maximumFractionDigits: 0,
   });
+  const { label: buttonLabel, variant: buttonVariant } =
+    getButtonTypeBadge(buttonType);
 
   return (
     <Card
@@ -71,12 +73,11 @@ export function ControllerCard({
 
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Button Type</span>
-          <Badge
-            variant={buttonType === "analog" ? "default" : "secondary"}
-            className="font-mono font-bold"
-          >
-            {buttonType.charAt(0).toUpperCase() + buttonType.slice(1)}
-          </Badge>
+          {buttonLabel ? (
+            <Badge variant={buttonVariant} className="font-mono font-bold">
+              {buttonLabel}
+            </Badge>
+          ) : null}
         </div>
 
         <div className="flex items-center justify-between">

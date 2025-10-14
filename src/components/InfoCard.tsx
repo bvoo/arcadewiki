@@ -8,7 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Bookmark, ChevronDown } from "lucide-react";
-import type { ControllerMeta } from "../data/controllers";
+import { getButtonTypeBadge, type ControllerMeta } from "../data/controllers";
 
 interface InfoCardProps {
   meta: ControllerMeta;
@@ -47,10 +47,7 @@ export function InfoCard({
             <div className="flex items-center gap-2">
               <span className="text-muted-foreground">Buttons:</span>
               {(() => {
-                const v = String(meta.buttonType || "").toLowerCase();
-                const label = v ? v.charAt(0).toUpperCase() + v.slice(1) : "";
-                const variant: "default" | "secondary" =
-                  v === "analog" ? "default" : "secondary";
+                const { label, variant } = getButtonTypeBadge(meta.buttonType);
                 return label ? (
                   <Badge variant={variant} className="font-mono font-bold">
                     {label}

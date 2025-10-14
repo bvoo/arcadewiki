@@ -43,7 +43,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import type { ControllerWithSlug } from "../data/controllers";
+import { getButtonTypeBadge, type ControllerWithSlug } from "../data/controllers";
 import { isInComparison, toggleComparison } from "../lib/comparison";
 import { getAllControllerDocs } from "../lib/controllers.content";
 
@@ -176,14 +176,14 @@ export function ControllersTable({
         accessorKey: "buttonType",
         header: "Buttons",
         cell: ({ getValue }) => {
-          const v = String(getValue<string>()).toLowerCase();
-          const label = v.charAt(0).toUpperCase() + v.slice(1);
-          const variant: "default" | "secondary" =
-            v === "analog" ? "default" : "secondary";
-          return (
+          const buttonType = getValue<Row["buttonType"] | undefined>();
+          const { label, variant } = getButtonTypeBadge(buttonType);
+          return label ? (
             <Badge variant={variant} className="font-mono font-bold">
               {label}
             </Badge>
+          ) : (
+            ""
           );
         },
       },
