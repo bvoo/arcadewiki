@@ -8,7 +8,6 @@ import {
   type FilterFn,
   type SortingState,
   type Row as TanstackRow,
-  flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
@@ -19,7 +18,6 @@ import React from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
@@ -27,22 +25,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ControllerTableView } from "./ControllerTableView";
+import { ChevronDown } from "lucide-react";
 import { getButtonTypeBadge, type ControllerWithSlug } from "../data/controllers";
 import { isInComparison, toggleComparison } from "../lib/comparison";
 import { getAllControllerDocs } from "../lib/controllers.content";
@@ -317,144 +301,7 @@ export function ControllersTable({
   });
 
   return (
-    <>
-      <Card className="overflow-hidden border-border">
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader className="text-secondary-foreground">
-              {table.getHeaderGroups().map((hg) => (
-                <TableRow key={hg.id}>
-                  {hg.headers.map((h) => {
-                    const isRightAligned =
-                      h.column.id === "weightGrams" ||
-                      h.column.id === "dimensionsMm" ||
-                      h.column.id === "releaseYear" ||
-                      h.column.id === "priceUSD";
-                    return (
-                      <TableHead
-                        key={h.id}
-                        className={`px-4 py-3 ${isRightAligned ? "text-right" : "text-left"}`}
-                      >
-                        {h.isPlaceholder ? null : (
-                          <div
-                            className={
-                              h.column.getCanSort()
-                                ? "cursor-pointer select-none hover:text-primary"
-                                : ""
-                            }
-                            onClick={h.column.getToggleSortingHandler()}
-                            onKeyDown={(e) => {
-                              if (
-                                h.column.getCanSort() &&
-                                (e.key === "Enter" || e.key === " ")
-                              ) {
-                                e.preventDefault();
-                                h.column.getToggleSortingHandler()?.(e);
-                              }
-                            }}
-                            role={h.column.getCanSort() ? "button" : undefined}
-                            tabIndex={h.column.getCanSort() ? 0 : undefined}
-                          >
-                            <span className="inline-flex items-center gap-1">
-                              {flexRender(
-                                h.column.columnDef.header,
-                                h.getContext(),
-                              )}
-                              {h.column.getCanSort() ? (
-                                h.column.getIsSorted() === "asc" ? (
-                                  <ChevronUp className="size-4" aria-hidden />
-                                ) : h.column.getIsSorted() === "desc" ? (
-                                  <ChevronDown className="size-4" aria-hidden />
-                                ) : null
-                              ) : null}
-                            </span>
-                          </div>
-                        )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="hover:bg-secondary/20">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-4 py-3">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-      {!hidePagination && (
-        <>
-          <div className="h-4" />
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<<"}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-            >
-              {"<"}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-            >
-              {">"}
-            </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-            >
-              {">>"}
-            </Button>
-            <span className="flex items-center gap-1">
-              <div>Page</div>
-              <strong>
-                {table.getState().pagination.pageIndex + 1} of{" "}
-                {table.getPageCount()}
-              </strong>
-            </span>
-            <Select
-              value={String(table.getState().pagination.pageSize)}
-              onValueChange={(value) => table.setPageSize(Number(value))}
-            >
-              <SelectTrigger size="sm" className="w-[120px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {[10, 20, 30, 40, 50].map((s) => (
-                  <SelectItem key={s} value={String(s)}>
-                    Show {s}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-        </>
-      )}
-    </>
+    <ControllerTableView table={table} hidePagination={hidePagination} />
   );
 }
 
