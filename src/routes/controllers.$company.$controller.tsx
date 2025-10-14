@@ -27,6 +27,7 @@ export const Route = createFileRoute("/controllers/$company/$controller")({
       "@context": "https://schema.org",
       "@type": "Product",
       name: meta.name,
+      image: ogImageUrl,
       brand: {
         "@type": "Brand",
         name: meta.maker,
@@ -41,6 +42,22 @@ export const Route = createFileRoute("/controllers/$company/$controller")({
             ? "https://schema.org/InStock"
             : "https://schema.org/OutOfStock",
           ...(meta.link && { url: meta.link }),
+          shippingDetails: {
+            "@type": "OfferShippingDetails",
+            shippingRate: {
+              "@type": "MonetaryAmount",
+              price: 0,
+              priceCurrency: "USD",
+            },
+            shippingDestination: {
+              "@type": "DefinedRegion",
+              addressCountry: "Worldwide",
+            },
+          },
+          hasMerchantReturnPolicy: {
+            "@type": "MerchantReturnPolicy",
+            returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+          },
         },
       }),
       ...(meta.releaseYear && {
