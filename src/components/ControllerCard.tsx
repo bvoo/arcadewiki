@@ -19,11 +19,6 @@ export function ControllerCard({
   company,
   controller,
 }: ControllerCardProps) {
-  const usd = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  });
   const { label: buttonLabel, variant: buttonVariant } = getButtonTypeBadge(buttonType);
 
   return (

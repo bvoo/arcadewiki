@@ -78,9 +78,10 @@ function ControllersHome() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader />
-      <div className="p-6">
+
+      <div className="flex grow flex-col p-6">
         <div className="mb-4 flex gap-4">
           <DebouncedInput
             value={globalFilter}
@@ -96,6 +97,7 @@ function ControllersHome() {
         <BookmarkedControllers enableComparison={comparisonEnabled} />
         <div className="h-4" />
         <ControllersTable globalFilter={globalFilter} enableComparison={comparisonEnabled} />
+        <div className='grow'></div>
         <EditOnGitHub filePath="src/routes/index.tsx" />
       </div>
       <ComparisonBar />

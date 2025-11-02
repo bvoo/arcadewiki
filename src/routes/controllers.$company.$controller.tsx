@@ -128,6 +128,7 @@ export const Route = createFileRoute('/controllers/$company/$controller')({
         { name: 'twitter:title', content: title },
         { name: 'twitter:description', content: description },
         { name: 'twitter:image', content: ogImageUrl },
+        { name: 'twitter:url', content: url },
       ],
       links: [{ rel: 'canonical', href: url }],
       scripts: [
@@ -169,7 +170,7 @@ function ControllerContentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen flex-col bg-background text-foreground">
       <SiteHeader
         breadcrumbs={[
           { label: 'Home', href: '/' },
@@ -185,24 +186,29 @@ function ControllerContentPage() {
           </Button>
         }
       />
-      <div className="p-6">
+
+      <div className="flex grow flex-col p-6">
         <div>
           <h1 className="font-bold text-2xl">{meta.name}</h1>
           <p className="text-muted-foreground">{meta.maker}</p>
         </div>
-        <div className="h-4" />
-        <div className="lg:flow-root">
+
+        <div className="mt-4 flex grow flex-col">
           <InfoCard
             meta={meta}
             bookmarked={bookmarked}
             onBookmarkToggle={handleBookmarkToggle}
             switchItems={switchItems}
           />
-          <div className="h-4 lg:h-0" />
+
           <article className="prose prose-invert max-w-none">
             <Component />
           </article>
+
           <SimilarControllers controllers={similarControllers} />
+
+          <div className="grow"></div>
+
           <EditOnGitHub filePath={`src/content/${company}/${controller}/index.mdx`} />
         </div>
       </div>

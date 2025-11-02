@@ -2,6 +2,7 @@ import { HelpCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { USD } from '@/lib/format';
 import { getButtonTypeBadge } from '../data/controllers';
 import type { SimilarController } from '../lib/similarControllers';
 
@@ -11,12 +12,6 @@ interface SimilarControllersProps {
 
 export function SimilarControllers({ controllers }: SimilarControllersProps) {
   if (controllers.length === 0) return null;
-
-  const usd = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 0,
-  });
 
   return (
     <div className="mt-12 border-border border-t pt-8">
@@ -28,19 +23,33 @@ export function SimilarControllers({ controllers }: SimilarControllersProps) {
 
           return (
             <a key={doc.slug} href={`/controllers/${meta.company}/${meta.controller}`} className="block">
-              <Card className="h-full gap-0 py-2 transition-colors hover:border-primary/50">
-                <CardHeader className="pb-2">
+              <Card className="h-full gap-2 py-4 transition-colors hover:border-primary/50">
+                <CardHeader className="px-4">
                   <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-base">{meta.name}</CardTitle>
-                      <p className="text-muted-foreground text-sm">{meta.maker}</p>
+                    <div className="mr-4 flex flex-1 items-start justify-between gap-2">
+                      <div>
+                        <CardTitle className="text-base">{meta.name}</CardTitle>
+                        <p className="text-muted-foreground text-sm">{meta.maker}</p>
+                      </div>
+                      <div className="flex gap-2">
+                        {buttonLabel && (
+                          <Badge variant={buttonVariant} className="font-mono text-xs">
+                            {buttonLabel}
+                          </Badge>
+                        )}
+                        {meta.currentlySold && (
+                          <Badge variant="outline" className="text-xs">
+                            Available
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <button
                             type="button"
-                            className="shrink-0 pt-2 text-muted-foreground transition-colors hover:text-foreground"
+                            className="shrink-0 text-muted-foreground transition-colors hover:text-foreground"
                             onClick={(e) => e.preventDefault()}
                           >
                             <HelpCircle className="size-4" />
@@ -58,30 +67,23 @@ export function SimilarControllers({ controllers }: SimilarControllersProps) {
                     </TooltipProvider>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="flex items-center justify-between gap-2">
-                    <div className="flex gap-2">
-                      {buttonLabel && (
-                        <Badge variant={buttonVariant} className="font-mono text-xs">
-                          {buttonLabel}
-                        </Badge>
-                      )}
-                      {meta.currentlySold && (
-                        <Badge variant="outline" className="text-xs">
-                          Available
-                        </Badge>
-                      )}
-                    </div>
-                    {meta.weightGrams && <p className="font-mono text-muted-foreground text-xs">{meta.weightGrams}g</p>}
-                  </div>
+
+                <CardContent className="space-y-4 px-4">
+                  <div className="flex items-center justify-between gap-2"></div>
+
                   {(meta.priceUSD || meta.dimensionsMm) && (
-                    <div className="flex items-center justify-between gap-2 text-sm">
-                      {meta.priceUSD && <p className="font-mono">{usd.format(meta.priceUSD)}</p>}
-                      {meta.dimensionsMm && (
-                        <p className="font-mono text-muted-foreground text-xs">
-                          {meta.dimensionsMm.width} × {meta.dimensionsMm.depth} × {meta.dimensionsMm.height}mm
-                        </p>
-                      )}
+                    <div className="flex items-end justify-between gap-2 text-sm">
+                      {meta.priceUSD && <p className="font-mono text-lg">{USD.format(meta.priceUSD)}</p>}
+                      <div className="flex flex-wrap justify-end gap-4">
+                        {meta.weightGrams && (
+                          <p className="font-mono text-muted-foreground text-xs">{meta.weightGrams}g</p>
+                        )}
+                        {meta.dimensionsMm && (
+                          <p className="font-mono text-muted-foreground text-xs">
+                            {meta.dimensionsMm.width} × {meta.dimensionsMm.depth} × {meta.dimensionsMm.height}mm
+                          </p>
+                        )}
+                      </div>
                     </div>
                   )}
                 </CardContent>
