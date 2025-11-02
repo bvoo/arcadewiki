@@ -1,9 +1,12 @@
-import satori from 'satori';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-import React from 'react';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { Resvg } from '@resvg/resvg-js';
+import React from 'react';
+import satori from 'satori';
+import { findMDXFiles, parseFrontmatter } from 'scripts/utils';
+import type { ControllerMeta } from '@/data/controllers';
+import { USD } from '@/lib/format';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,78 +19,6 @@ async function loadFont(family: 'Inter' | 'Roboto+Mono', weight: 400 | 700) {
 
   const fontData = await fetch(fontUrl).then((res) => res.arrayBuffer());
   return Buffer.from(fontData);
-}
-
-function parseFrontmatter(content: string) {
-  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/;
-  const match = content.match(frontmatterRegex);
-  if (!match) return null;
-
-  try {
-    const yamlContent = match[1];
-    const meta: any = {};
-
-    const lines = yamlContent.split('\n');
-    let currentKey = '';
-
-    for (const line of lines) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-
-      if (line.startsWith('  ') && currentKey) {
-        if (line.trim().startsWith('-')) {
-          if (!Array.isArray(meta[currentKey])) {
-            meta[currentKey] = [];
-          }
-          meta[currentKey].push(line.trim().substring(1).trim());
-        } else if (line.includes(':')) {
-          const [subKey, subValue] = line
-            .trim()
-            .split(':')
-            .map((s) => s.trim());
-          if (!meta[currentKey]) {
-            meta[currentKey] = {};
-          }
-          meta[currentKey][subKey] = isNaN(Number(subValue)) ? subValue : Number(subValue);
-        }
-      } else if (line.includes(':')) {
-        const colonIndex = line.indexOf(':');
-        const key = line.substring(0, colonIndex).trim();
-        let value = line.substring(colonIndex + 1).trim();
-
-        currentKey = key;
-
-        if (value) {
-          if (value === 'true') value = true as any;
-          else if (value === 'false') value = false as any;
-          else if (!isNaN(Number(value)) && value !== '') value = Number(value) as any;
-
-          meta[key] = value;
-        }
-      }
-    }
-
-    return meta;
-  } catch (e) {
-    console.error('Failed to parse frontmatter:', e);
-    return null;
-  }
-}
-
-function findMDXFiles(dir: string): string[] {
-  const files: string[] = [];
-  const items = fs.readdirSync(dir, { withFileTypes: true });
-
-  for (const item of items) {
-    const fullPath = path.join(dir, item.name);
-    if (item.isDirectory()) {
-      files.push(...findMDXFiles(fullPath));
-    } else if (item.name === 'index.mdx') {
-      files.push(fullPath);
-    }
-  }
-
-  return files;
 }
 
 async function generateOGImages() {
@@ -112,19 +43,20 @@ async function generateOGImages() {
 
   for (const filePath of mdxFiles) {
     const content = fs.readFileSync(filePath, 'utf-8');
-    const meta = parseFrontmatter(content);
+    let meta: ControllerMeta | null = null;
 
-    if (!meta) {
-      console.log(`Skipping ${filePath} - no frontmatter found`);
+    try {
+      meta = parseFrontmatter(content);
+
+      if (meta == null) {
+        console.log(`Skipping ${filePath} - no frontmatter found`);
+        continue;
+      }
+    } catch (error) {
+      console.error(`Error parsing frontmatter for ${filePath}:\n\t${(error as Error).message}`);
       continue;
     }
 
-    if (!meta.company || !meta.controller) {
-      console.log(
-        `Skipping ${filePath} - missing required fields (company: ${meta.company || 'missing'}, controller: ${meta.controller || 'missing'})`,
-      );
-      continue;
-    }
     const companyDir = path.join(outputDir, meta.company);
 
     if (!fs.existsSync(companyDir)) {
@@ -243,7 +175,7 @@ async function generateOGImages() {
                     },
                   },
                   React.createElement('span', { style: { color: '#666666' } }, 'Price:'),
-                  React.createElement('span', { style: { color: '#ffffff' } }, `$${meta.priceUSD}`),
+                  React.createElement('span', { style: { color: '#ffffff' } }, USD.format(meta.priceUSD)),
                 ),
             ].filter(Boolean),
           ),
