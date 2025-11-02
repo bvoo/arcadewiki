@@ -3,6 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { type ControllerWithSlug, getButtonTypeBadge } from '@/data/controllers';
+import { USD } from '@/lib/format';
 
 type ControllerCardProps = ControllerWithSlug;
 
@@ -35,7 +36,7 @@ export function ControllerCard({
         {priceUSD && (
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Price</span>
-            <span className="font-mono">{usd.format(priceUSD)}</span>
+            <span className="font-mono">{USD.format(priceUSD)}</span>
           </div>
         )}
 

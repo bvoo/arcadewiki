@@ -6,6 +6,7 @@ import { InfoCard } from '@/components/InfoCard';
 import { SimilarControllers } from '@/components/SimilarControllers';
 import { SiteHeader } from '@/components/SiteHeader';
 import { Button } from '@/components/ui/button';
+import { USD } from '@/lib/format';
 import { isBookmarked, toggleBookmark } from '../lib/bookmarks';
 import { getControllerDoc } from '../lib/controllers.content';
 import { getSimilarControllers } from '../lib/similarControllers';
@@ -18,7 +19,7 @@ export const Route = createFileRoute('/controllers/$company/$controller')({
 
     const { meta } = doc;
     const title = `${meta.name} by ${meta.maker} | arcade.wiki`;
-    const description = `Detailed information for the ${meta.name} controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ''}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ''}${meta.priceUSD ? `, priced at $${meta.priceUSD}` : ''}.`;
+    const description = `Detailed information for the ${meta.name} controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ''}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ''}${meta.priceUSD ? `, priced at ${USD.format(meta.priceUSD)}` : ''}.`;
     const url = `https://arcade.wiki/controllers/${params.company}/${params.controller}`;
     const ogImageUrl = `https://arcade.wiki/og/${params.company}/${params.controller}.png`;
 
@@ -36,7 +37,7 @@ export const Route = createFileRoute('/controllers/$company/$controller')({
       ...(meta.priceUSD && {
         offers: {
           '@type': 'Offer',
-          price: meta.priceUSD,
+          price: USD.format(meta.priceUSD).replace(/[^0-9.]/g, ''),
           priceCurrency: 'USD',
           availability: meta.currentlySold ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
           ...(meta.link && { url: meta.link }),
@@ -44,8 +45,8 @@ export const Route = createFileRoute('/controllers/$company/$controller')({
             '@type': 'OfferShippingDetails',
             shippingRate: {
               '@type': 'MonetaryAmount',
-              price: 0,
-              priceCurrency: 'USD',
+              value: '0.00',
+              currency: 'USD',
             },
             shippingDestination: {
               '@type': 'DefinedRegion',
@@ -109,7 +110,7 @@ export const Route = createFileRoute('/controllers/$company/$controller')({
           ? [
               {
                 property: 'product:price:amount',
-                content: String(meta.priceUSD),
+                content: USD.format(meta.priceUSD).replace(/[^0-9.]/g, ''),
               },
               { property: 'product:price:currency', content: 'USD' },
             ]

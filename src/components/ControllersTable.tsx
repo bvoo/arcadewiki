@@ -11,9 +11,9 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import React from 'react';
-
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
+import { USD } from '@/lib/format';
 import { type ControllerWithSlug, getButtonTypeBadge } from '../data/controllers';
 import { isInComparison, toggleComparison } from '../lib/comparison';
 import { getAllControllerDocs } from '../lib/controllers.content';
@@ -48,15 +48,7 @@ export function ControllersTable({
 }: ControllersTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([{ id: 'releaseYear', desc: true }]);
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
-  const usd = React.useMemo(
-    () =>
-      new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0,
-      }),
-    [],
-  );
+
   const defaultRows: Row[] = React.useMemo(
     () =>
       getAllControllerDocs().map((d) => ({
@@ -212,11 +204,11 @@ export function ControllersTable({
         header: 'Price',
         cell: ({ getValue }) => {
           const v = getValue<number | undefined>();
-          return v ? <div className="text-right font-mono tabular-nums">{usd.format(v)}</div> : '';
+          return v ? <div className="text-right font-mono tabular-nums">{USD.format(v)}</div> : '';
         },
       },
     ],
-    [nameColumnOverride, enableComparison, comparisonColumn, maxSwitchChars, usd],
+    [nameColumnOverride, enableComparison, comparisonColumn, maxSwitchChars],
   );
 
   const table = useReactTable<Row>({
