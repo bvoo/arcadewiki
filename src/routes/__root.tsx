@@ -3,7 +3,7 @@ import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import type React from 'react';
 
-import appCss from '../styles.css?url';
+import '../styles.css';
 
 export const Route = createRootRoute({
   head: () => ({
@@ -39,10 +39,6 @@ export const Route = createRootRoute({
       },
     ],
     links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
       {
         rel: 'icon',
         type: 'image/x-icon',
