@@ -1,5 +1,5 @@
-import type { ControllerDoc } from "./controllers.content";
-import { getAllControllerDocs } from "./controllers.content";
+import type { ControllerDoc } from './controllers.content';
+import { getAllControllerDocs } from './controllers.content';
 
 export interface SimilarController {
   doc: ControllerDoc;
@@ -7,10 +7,7 @@ export interface SimilarController {
   reasons: string[];
 }
 
-export function getSimilarControllers(
-  currentDoc: ControllerDoc,
-  limit = 3,
-): SimilarController[] {
+export function getSimilarControllers(currentDoc: ControllerDoc, limit = 3): SimilarController[] {
   const all = getAllControllerDocs();
   const current = currentDoc.meta;
 
@@ -23,20 +20,19 @@ export function getSimilarControllers(
 
       if (meta.maker === current.maker) {
         score += 10;
-        reasons.push("Same maker (+10)");
+        reasons.push('Same maker (+10)');
       }
 
       if (meta.buttonType === current.buttonType) {
         score += 5;
-        reasons.push("Same button type (+5)");
+        reasons.push('Same button type (+5)');
       }
 
       if (current.priceUSD && meta.priceUSD) {
-        const priceDiff =
-          Math.abs(meta.priceUSD - current.priceUSD) / current.priceUSD;
+        const priceDiff = Math.abs(meta.priceUSD - current.priceUSD) / current.priceUSD;
         if (priceDiff < 0.2) {
           score += 3;
-          reasons.push("Similar price (+3)");
+          reasons.push('Similar price (+3)');
         }
       }
 
@@ -45,23 +41,17 @@ export function getSimilarControllers(
         : current.switchType
           ? [current.switchType]
           : [];
-      const metaSwitches = Array.isArray(meta.switchType)
-        ? meta.switchType
-        : meta.switchType
-          ? [meta.switchType]
-          : [];
+      const metaSwitches = Array.isArray(meta.switchType) ? meta.switchType : meta.switchType ? [meta.switchType] : [];
 
-      const hasCommonSwitch = currentSwitches.some((s) =>
-        metaSwitches.includes(s),
-      );
+      const hasCommonSwitch = currentSwitches.some((s) => metaSwitches.includes(s));
       if (hasCommonSwitch) {
         score += 4;
-        reasons.push("Matching switches (+4)");
+        reasons.push('Matching switches (+4)');
       }
 
       if (Math.abs(meta.releaseYear - current.releaseYear) <= 2) {
         score += 2;
-        reasons.push("Similar release year (+2)");
+        reasons.push('Similar release year (+2)');
       }
 
       return { doc, score, reasons };

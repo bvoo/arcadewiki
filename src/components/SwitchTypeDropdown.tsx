@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
-import React from "react";
-import { cn } from "@/lib/utils";
+import { ChevronDown } from 'lucide-react';
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-type DropdownModule = typeof import("@/components/ui/dropdown-menu");
+type DropdownModule = typeof import('@/components/ui/dropdown-menu');
 
 type SwitchTypeDropdownProps = {
   summary: string;
@@ -20,9 +20,7 @@ export function SwitchTypeDropdown({
   buttonClassName,
   buttonStyle,
 }: SwitchTypeDropdownProps) {
-  const [dropdownModule, setDropdownModule] = React.useState<DropdownModule | null>(
-    null,
-  );
+  const [dropdownModule, setDropdownModule] = React.useState<DropdownModule | null>(null);
   const [renderMenu, setRenderMenu] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -31,7 +29,7 @@ export function SwitchTypeDropdown({
     if (dropdownModule) return dropdownModule;
     setLoading(true);
     try {
-      const mod = await import("@/components/ui/dropdown-menu");
+      const mod = await import('@/components/ui/dropdown-menu');
       setDropdownModule(mod);
       return mod;
     } finally {
@@ -50,10 +48,7 @@ export function SwitchTypeDropdown({
     void ensureModule();
   }, [ensureModule]);
 
-  const buttonClasses = React.useMemo(
-    () => cn("justify-between max-w-full", buttonClassName),
-    [buttonClassName],
-  );
+  const buttonClasses = React.useMemo(() => cn('justify-between max-w-full', buttonClassName), [buttonClassName]);
 
   const widthStyle = React.useMemo<React.CSSProperties | undefined>(() => {
     if (maxChars === undefined) return buttonStyle;
@@ -61,12 +56,7 @@ export function SwitchTypeDropdown({
   }, [buttonStyle, maxChars]);
 
   if (dropdownModule && renderMenu) {
-    const {
-      DropdownMenu,
-      DropdownMenuTrigger,
-      DropdownMenuContent,
-      DropdownMenuItem,
-    } = dropdownModule;
+    const { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } = dropdownModule;
 
     return (
       <DropdownMenu open={open} onOpenChange={setOpen}>
@@ -85,10 +75,7 @@ export function SwitchTypeDropdown({
             <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent
-          align="start"
-          className="w-[var(--radix-dropdown-menu-trigger-width)]"
-        >
+        <DropdownMenuContent align="start" className="w-(--radix-dropdown-menu-trigger-width)">
           {items.map((item) => (
             <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
           ))}
@@ -109,7 +96,7 @@ export function SwitchTypeDropdown({
         void triggerOpen();
       }}
       onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
+        if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
           void triggerOpen();
         }
@@ -118,7 +105,7 @@ export function SwitchTypeDropdown({
       onMouseEnter={prefetch}
     >
       <span className="truncate" title={summary}>
-        {loading ? "Loading…" : summary}
+        {loading ? 'Loading…' : summary}
       </span>
       <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden />
     </Button>

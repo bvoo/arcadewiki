@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { Breadcrumbs } from "./Breadcrumbs";
+import { Link } from '@tanstack/react-router';
+import { Breadcrumbs } from './Breadcrumbs';
 
 interface BreadcrumbItem {
   label: string;
@@ -13,18 +13,16 @@ interface SiteHeaderProps {
 
 export function SiteHeader({ breadcrumbs, actions }: SiteHeaderProps) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex h-14 items-center px-6 gap-8 w-full">
+    <header className="sticky top-0 z-50 w-full border-border border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
+      <div className="flex h-14 w-full items-center gap-8 px-6">
         <Link
           to="/"
-          className="font-mono flex items-center gap-2 font-bold text-lg hover:opacity-80 transition-opacity"
+          className="flex items-center gap-2 font-bold font-mono text-lg transition-opacity hover:opacity-80"
         >
           {/* todo: figure out logo */}
           <span>arcade.wiki</span>
         </Link>
-        {breadcrumbs && breadcrumbs.length > 0 && (
-          <Breadcrumbs items={breadcrumbs} />
-        )}
+        {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
         <div className="ml-auto">{actions}</div>
       </div>
     </header>

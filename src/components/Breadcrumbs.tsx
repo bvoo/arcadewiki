@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { ChevronRight } from "lucide-react";
+import { Link } from '@tanstack/react-router';
+import { ChevronRight } from 'lucide-react';
 
 interface BreadcrumbItem {
   label: string;
@@ -13,30 +13,20 @@ interface BreadcrumbsProps {
 export function Breadcrumbs({ items }: BreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex items-center gap-2 text-sm text-muted-foreground">
+      <ol className="flex items-center gap-2 text-muted-foreground text-sm">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 
           return (
-            <li
-              key={item.href || item.label}
-              className="flex items-center gap-2"
-            >
+            <li key={item.href || item.label} className="flex items-center gap-2">
               {item.href && !isLast ? (
-                <Link
-                  to={item.href}
-                  className="hover:text-foreground transition-colors"
-                >
+                <Link to={item.href} className="transition-colors hover:text-foreground">
                   {item.label}
                 </Link>
               ) : (
-                <span className={isLast ? "text-foreground font-medium" : ""}>
-                  {item.label}
-                </span>
+                <span className={isLast ? 'font-medium text-foreground' : ''}>{item.label}</span>
               )}
-              {!isLast && (
-                <ChevronRight className="size-4" aria-hidden="true" />
-              )}
+              {!isLast && <ChevronRight className="size-4" aria-hidden="true" />}
             </li>
           );
         })}

@@ -1,12 +1,6 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface MakerCardProps {
   company: string;
@@ -25,20 +19,20 @@ export function MakerCard({
   avgPrice,
   latestYear,
 }: MakerCardProps) {
-  const usd = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  const usd = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 0,
   });
 
   return (
-    <Card className="group hover:border-primary/50 transition-colors py-4">
+    <Card className="group py-4 transition-colors hover:border-primary/50">
       <CardHeader>
-        <CardTitle className="text-xl group-hover:text-primary transition-colors hover:underline">
+        <CardTitle className="text-xl transition-colors hover:underline group-hover:text-primary">
           <a href={`/makers/${company}`}>{maker}</a>
         </CardTitle>
         <CardDescription>
-          {controllerCount} controller{controllerCount !== 1 ? "s" : ""}
+          {controllerCount} controller{controllerCount !== 1 ? 's' : ''}
           {currentlySoldCount > 0 && <> - {currentlySoldCount} available</>}
         </CardDescription>
       </CardHeader>

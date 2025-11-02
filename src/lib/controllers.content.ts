@@ -1,32 +1,35 @@
-import type { ControllerMeta, ControllerWithSlug } from "../data/controllers";
+import type { ControllerMeta, ControllerWithSlug } from '../data/controllers';
 
 export type ControllerFrontmatter = ControllerMeta;
 
 export type ControllerDoc = {
-  slug: ControllerWithSlug["slug"]; // company/controller
+  slug: ControllerWithSlug['slug']; // company/controller
   meta: ControllerFrontmatter;
   Component: React.ComponentType<Record<string, never>>;
 };
 
-const modules = import.meta.glob("../content/**/index.mdx", {
+const modules = import.meta.glob('../content/**/index.mdx', {
   eager: true,
   // biome-ignore lint/suspicious/noExplicitAny: MDX modules don't have static types
 }) as Record<string, any>;
 
 const allDocs: ControllerDoc[] = Object.entries(modules)
+  .filter(([path, mod]) => {
+    if (mod == null) {
+      console.warn(`Module at path ${path} is null or undefined.`);
+      return false;
+    }
+    return true;
+  })
   .map(([path, mod]) => {
-    const fm = (mod.frontmatter ||
-      mod.meta ||
-      {}) as Partial<ControllerFrontmatter>;
+    const fm = (mod.frontmatter || mod.meta || {}) as Partial<ControllerFrontmatter>;
     const match = /content\/([^/]+)\/([^/]+)\/index\.mdx$/.exec(path);
-    const company = fm.company ?? match?.[1] ?? "unknown";
-    const controller = fm.controller ?? match?.[2] ?? fm.id ?? "unknown";
+    const company = fm.company ?? match?.[1] ?? 'unknown';
+    const controller = fm.controller ?? match?.[2] ?? fm.id ?? 'unknown';
     const slug = `${company}/${controller}`;
 
-    const buttonType: "digital" | "analog" =
-      fm.buttonType === "digital" || fm.buttonType === "analog"
-        ? fm.buttonType
-        : "digital";
+    const buttonType: 'digital' | 'analog' =
+      fm.buttonType === 'digital' || fm.buttonType === 'analog' ? fm.buttonType : 'digital';
 
     const meta: ControllerFrontmatter = {
       id: String(fm.id ?? controller),
@@ -55,11 +58,6 @@ export function getAllControllerDocs(): ControllerDoc[] {
   return allDocs;
 }
 
-export function getControllerDoc(
-  company: string,
-  controller: string,
-): ControllerDoc | undefined {
-  return allDocs.find(
-    (d) => d.meta.company === company && d.meta.controller === controller,
-  );
+export function getControllerDoc(company: string, controller: string): ControllerDoc | undefined {
+  return allDocs.find((d) => d.meta.company === company && d.meta.controller === controller);
 }

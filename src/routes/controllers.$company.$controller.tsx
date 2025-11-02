@@ -1,16 +1,16 @@
-import { EditOnGitHub } from "@/components/EditOnGitHub";
-import { InfoCard } from "@/components/InfoCard";
-import { SimilarControllers } from "@/components/SimilarControllers";
-import { SiteHeader } from "@/components/SiteHeader";
-import { Button } from "@/components/ui/button";
-import { createFileRoute } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
-import React from "react";
-import { isBookmarked, toggleBookmark } from "../lib/bookmarks";
-import { getControllerDoc } from "../lib/controllers.content";
-import { getSimilarControllers } from "../lib/similarControllers";
+import { createFileRoute } from '@tanstack/react-router';
+import { ArrowLeft } from 'lucide-react';
+import React from 'react';
+import { EditOnGitHub } from '@/components/EditOnGitHub';
+import { InfoCard } from '@/components/InfoCard';
+import { SimilarControllers } from '@/components/SimilarControllers';
+import { SiteHeader } from '@/components/SiteHeader';
+import { Button } from '@/components/ui/button';
+import { isBookmarked, toggleBookmark } from '../lib/bookmarks';
+import { getControllerDoc } from '../lib/controllers.content';
+import { getSimilarControllers } from '../lib/similarControllers';
 
-export const Route = createFileRoute("/controllers/$company/$controller")({
+export const Route = createFileRoute('/controllers/$company/$controller')({
   component: ControllerContentPage,
   head: ({ params }) => {
     const doc = getControllerDoc(params.company, params.controller);
@@ -18,45 +18,43 @@ export const Route = createFileRoute("/controllers/$company/$controller")({
 
     const { meta } = doc;
     const title = `${meta.name} by ${meta.maker} | arcade.wiki`;
-    const description = `Detailed information for the ${meta.name} controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ""}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ""}${meta.priceUSD ? `, priced at $${meta.priceUSD}` : ""}.`;
+    const description = `Detailed information for the ${meta.name} controller by ${meta.maker}. ${meta.buttonType ? `Features ${meta.buttonType} buttons` : ''}${meta.weightGrams ? `, weighs ${meta.weightGrams}g` : ''}${meta.priceUSD ? `, priced at $${meta.priceUSD}` : ''}.`;
     const url = `https://arcade.wiki/controllers/${params.company}/${params.controller}`;
     const ogImageUrl = `https://arcade.wiki/og/${params.company}/${params.controller}.png`;
 
     // JSON-LD Structured Data
     const structuredData = {
-      "@context": "https://schema.org",
-      "@type": "Product",
+      '@context': 'https://schema.org',
+      '@type': 'Product',
       name: meta.name,
       image: ogImageUrl,
       brand: {
-        "@type": "Brand",
+        '@type': 'Brand',
         name: meta.maker,
       },
       description: description,
       ...(meta.priceUSD && {
         offers: {
-          "@type": "Offer",
+          '@type': 'Offer',
           price: meta.priceUSD,
-          priceCurrency: "USD",
-          availability: meta.currentlySold
-            ? "https://schema.org/InStock"
-            : "https://schema.org/OutOfStock",
+          priceCurrency: 'USD',
+          availability: meta.currentlySold ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
           ...(meta.link && { url: meta.link }),
           shippingDetails: {
-            "@type": "OfferShippingDetails",
+            '@type': 'OfferShippingDetails',
             shippingRate: {
-              "@type": "MonetaryAmount",
+              '@type': 'MonetaryAmount',
               price: 0,
-              priceCurrency: "USD",
+              priceCurrency: 'USD',
             },
             shippingDestination: {
-              "@type": "DefinedRegion",
-              addressCountry: "Worldwide",
+              '@type': 'DefinedRegion',
+              addressCountry: 'Worldwide',
             },
           },
           hasMerchantReturnPolicy: {
-            "@type": "MerchantReturnPolicy",
-            returnPolicyCategory: "https://schema.org/MerchantReturnNotPermitted",
+            '@type': 'MerchantReturnPolicy',
+            returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
           },
         },
       }),
@@ -65,26 +63,26 @@ export const Route = createFileRoute("/controllers/$company/$controller")({
       }),
       ...(meta.weightGrams && {
         weight: {
-          "@type": "QuantitativeValue",
+          '@type': 'QuantitativeValue',
           value: meta.weightGrams,
-          unitCode: "GRM",
+          unitCode: 'GRM',
         },
       }),
       ...(meta.dimensionsMm && {
         depth: {
-          "@type": "QuantitativeValue",
+          '@type': 'QuantitativeValue',
           value: meta.dimensionsMm.depth,
-          unitCode: "MMT",
+          unitCode: 'MMT',
         },
         width: {
-          "@type": "QuantitativeValue",
+          '@type': 'QuantitativeValue',
           value: meta.dimensionsMm.width,
-          unitCode: "MMT",
+          unitCode: 'MMT',
         },
         height: {
-          "@type": "QuantitativeValue",
+          '@type': 'QuantitativeValue',
           value: meta.dimensionsMm.height,
-          unitCode: "MMT",
+          unitCode: 'MMT',
         },
       }),
     };
@@ -92,48 +90,48 @@ export const Route = createFileRoute("/controllers/$company/$controller")({
     return {
       meta: [
         { title },
-        { name: "description", content: description },
+        { name: 'description', content: description },
         {
-          name: "keywords",
-          content: `${meta.name}, ${meta.maker}, arcade controller, arcade stick, ${meta.buttonType || ""}, fightstick`,
+          name: 'keywords',
+          content: `${meta.name}, ${meta.maker}, arcade controller, arcade stick, ${meta.buttonType || ''}, fightstick`,
         },
         // Open Graph
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:url", content: url },
-        { property: "og:type", content: "product" },
-        { property: "og:image", content: ogImageUrl },
-        { property: "og:image:width", content: "1200" },
-        { property: "og:image:height", content: "630" },
-        { property: "og:image:type", content: "image/png" },
-        { property: "product:brand", content: meta.maker },
+        { property: 'og:title', content: title },
+        { property: 'og:description', content: description },
+        { property: 'og:url', content: url },
+        { property: 'og:type', content: 'product' },
+        { property: 'og:image', content: ogImageUrl },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:type', content: 'image/png' },
+        { property: 'product:brand', content: meta.maker },
         ...(meta.priceUSD
           ? [
               {
-                property: "product:price:amount",
+                property: 'product:price:amount',
                 content: String(meta.priceUSD),
               },
-              { property: "product:price:currency", content: "USD" },
+              { property: 'product:price:currency', content: 'USD' },
             ]
           : []),
         ...(meta.currentlySold !== undefined
           ? [
               {
-                property: "product:availability",
-                content: meta.currentlySold ? "in stock" : "out of stock",
+                property: 'product:availability',
+                content: meta.currentlySold ? 'in stock' : 'out of stock',
               },
             ]
           : []),
         // Twitter Card
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
-        { name: "twitter:image", content: ogImageUrl },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: title },
+        { name: 'twitter:description', content: description },
+        { name: 'twitter:image', content: ogImageUrl },
       ],
-      links: [{ rel: "canonical", href: url }],
+      links: [{ rel: 'canonical', href: url }],
       scripts: [
         {
-          type: "application/ld+json",
+          type: 'application/ld+json',
           children: JSON.stringify(structuredData),
         },
       ],
@@ -145,10 +143,12 @@ function ControllerContentPage() {
   const { company, controller } = Route.useParams();
   const doc = getControllerDoc(company, controller);
 
-  if (!doc) {
+  const [bookmarked, setBookmarked] = React.useState(() => isBookmarked(company, controller));
+
+  if (doc == null) {
     return (
-      <div className="min-h-screen bg-background text-foreground p-6">
-        <h1 className="text-xl font-bold">Controller not found</h1>
+      <div className="min-h-screen bg-background p-6 text-foreground">
+        <h1 className="font-bold text-xl">Controller not found</h1>
         <p className="text-muted-foreground">
           No controller at {company}/{controller}.
         </p>
@@ -158,16 +158,9 @@ function ControllerContentPage() {
 
   const { meta, Component } = doc;
 
-  const switchItems = Array.isArray(meta.switchType)
-    ? meta.switchType
-    : meta.switchType
-      ? [meta.switchType]
-      : [];
+  const switchItems = Array.isArray(meta.switchType) ? meta.switchType : meta.switchType ? [meta.switchType] : [];
 
   const similarControllers = getSimilarControllers(doc, 3);
-  const [bookmarked, setBookmarked] = React.useState(() =>
-    isBookmarked(company, controller),
-  );
 
   const handleBookmarkToggle = () => {
     const newState = toggleBookmark(company, controller);
@@ -178,14 +171,14 @@ function ControllerContentPage() {
     <div className="min-h-screen bg-background text-foreground">
       <SiteHeader
         breadcrumbs={[
-          { label: "Home", href: "/" },
+          { label: 'Home', href: '/' },
           { label: meta.maker, href: `/makers/${company}` },
           { label: meta.name },
         ]}
         actions={
           <Button asChild variant="ghost" size="sm">
             <a href="/">
-              <ArrowLeft className="size-4 mr-2" />
+              <ArrowLeft className="mr-2 size-4" />
               Back to List
             </a>
           </Button>
@@ -193,7 +186,7 @@ function ControllerContentPage() {
       />
       <div className="p-6">
         <div>
-          <h1 className="text-2xl font-bold">{meta.name}</h1>
+          <h1 className="font-bold text-2xl">{meta.name}</h1>
           <p className="text-muted-foreground">{meta.maker}</p>
         </div>
         <div className="h-4" />
@@ -209,9 +202,7 @@ function ControllerContentPage() {
             <Component />
           </article>
           <SimilarControllers controllers={similarControllers} />
-          <EditOnGitHub
-            filePath={`src/content/${company}/${controller}/index.mdx`}
-          />
+          <EditOnGitHub filePath={`src/content/${company}/${controller}/index.mdx`} />
         </div>
       </div>
     </div>

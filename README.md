@@ -4,8 +4,8 @@ Thanks for helping improve arcade.wiki! This guide explains how to add and maint
 
 ## Project Structure
 
-- __Content root__: `src/content/`
-- __Per-controller path__: `src/content/{company}/{controller}/index.mdx`
+- **Content root**: `src/content/`
+- **Per-controller path**: `src/content/{company}/{controller}/index.mdx`
   - Example: `src/content/orca-analog-controllers/the-orca/index.mdx`
 
 ## MDX Frontmatter Schema
@@ -15,24 +15,24 @@ Each controller page uses YAML frontmatter that maps to `ControllerFrontmatter` 
 Required/optional fields:
 
 ```yaml
-id: the-orca                    # string; defaults to folder name
-name: The Orca                  # string; display name
-maker: Orca Analog Controllers  # string; human-friendly maker
-company: orca-analog-controllers# string; company slug (folder name)
-controller: the-orca            # string; controller slug (folder name)
-buttonType: analog              # string; "digital" or "analog"
-priceUSD: 249.0                 # number; omit if unknown
-currentlySold: true             # boolean
-releaseYear: 2024               # number
-switchType:                     # string or string[]
+id: the-orca #                      string; defaults to folder name
+name: The Orca #                    string; display name
+maker: Orca Analog Controllers #    string; human-friendly maker
+company: orca-analog-controllers #  string; company slug (folder name)
+controller: the-orca #              string; controller slug (folder name)
+buttonType: analog #                string; "digital" or "analog"
+priceUSD: 249.0 #                   number; omit if unknown
+currentlySold: true #               boolean
+releaseYear: 2024 #                 number
+switchType: #                       string or string[]
   - Everglide Rice Pudding Hall Effect
   - Kailh Speed Silver
-weightGrams: 1000               # number; omit if unknown
-dimensionsMm:                   # object; omit fields if unknown
+weightGrams: 1000 #                 number; omit if unknown
+dimensionsMm: #                     object; omit fields if unknown
   width: 331
   depth: 185
   height: 39
-link: https://example.com       # optional external link
+link: https://example.com #         optional external link
 ```
 
 After the frontmatter separator `---`, write normal Markdown/MDX for the page body (e.g., Overview, Features, Pros/Cons, etc.).
@@ -75,11 +75,11 @@ Write your description here. You can use standard Markdown: headings, paragraphs
 
 ## Content Rules of Thumb
 
-- __Slugs__ (`company`, `controller`) must match their directory names.
-- __Numbers__: use plain numbers (no quotes). Prices are in USD.
-- __Omit unknowns__: leave fields out instead of guessing.
-- __External links__: set a single `link` to the official product page if available.
-- __Images__: For now, store public images next to their respective `index.mdx` and link by relative path (e.g., `./controller.webp`).
+- **Slugs** (`company`, `controller`) must match their directory names.
+- **Numbers**: use plain numbers (no quotes). Prices are in USD.
+- **Omit unknowns**: leave fields out instead of guessing.
+- **External links**: set a single `link` to the official product page if available.
+- **Images**: For now, store public images next to their respective `index.mdx` and link by relative path (e.g., `./controller.webp`).
 
 ## Local Development
 

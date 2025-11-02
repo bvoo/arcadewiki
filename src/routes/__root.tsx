@@ -1,82 +1,81 @@
-import { HeadContent, Scripts, createRootRoute } from "@tanstack/react-router";
-import type React from "react";
-import { useEffect, useState } from "react";
+import { TanStackDevtools } from '@tanstack/react-devtools';
+import { createRootRoute, HeadContent, Scripts } from '@tanstack/react-router';
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
+import type React from 'react';
 
-import appCss from "../styles.css?url";
+import appCss from '../styles.css?url';
 
 export const Route = createRootRoute({
   head: () => ({
     meta: [
       {
-        charSet: "utf-8",
+        charSet: 'utf-8',
       },
       {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
+        name: 'viewport',
+        content: 'width=device-width, initial-scale=1',
       },
       {
-        title: "arcade.wiki - Arcade Controller Database",
+        title: 'arcade.wiki - Arcade Controller Database',
       },
       {
-        name: "description",
+        name: 'description',
         content:
-          "Comprehensive database of arcade-style controllers. Compare specs, get the full picture, and find the perfect controller.",
+          'Comprehensive database of arcade-style controllers. Compare specs, get the full picture, and find the perfect controller.',
       },
       // Open Graph
       {
-        property: "og:site_name",
-        content: "arcade.wiki",
+        property: 'og:site_name',
+        content: 'arcade.wiki',
       },
       {
-        property: "og:type",
-        content: "website",
+        property: 'og:type',
+        content: 'website',
       },
       // Twitter Card
       {
-        name: "twitter:card",
-        content: "summary_large_image",
+        name: 'twitter:card',
+        content: 'summary_large_image',
       },
     ],
     links: [
       {
-        rel: "stylesheet",
+        rel: 'stylesheet',
         href: appCss,
       },
       {
-        rel: "icon",
-        type: "image/x-icon",
-        href: "/favicon/favicon.ico",
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon/favicon.ico',
       },
       {
-        rel: "icon",
-        type: "image/png",
-        sizes: "96x96",
-        href: "/favicon/favicon-96x96.png",
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '96x96',
+        href: '/favicon/favicon-96x96.png',
       },
       {
-        rel: "icon",
-        type: "image/svg+xml",
-        href: "/favicon/favicon.svg",
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: '/favicon/favicon.svg',
       },
       {
-        rel: "apple-touch-icon",
-        sizes: "180x180",
-        href: "/favicon/apple-touch-icon.png",
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: '/favicon/apple-touch-icon.png',
       },
       {
-        rel: "manifest",
-        href: "/manifest.json",
+        rel: 'manifest',
+        href: '/manifest.json',
       },
     ],
   }),
 
   notFoundComponent: () => (
-    <div className="min-h-screen bg-gray-900 text-gray-100 flex items-center justify-center p-6">
+    <div className="flex min-h-screen items-center justify-center bg-gray-900 p-6 text-gray-100">
       <div className="text-center">
-        <h1 className="text-3xl font-bold mb-2">Page Not Found</h1>
-        <p className="text-gray-400 mb-6">
-          The page you are looking for doesn’t exist.
-        </p>
+        <h1 className="mb-2 font-bold text-3xl">Page Not Found</h1>
+        <p className="mb-6 text-gray-400">The page you are looking for doesn’t exist.</p>
         <a className="text-blue-500 hover:underline" href="/">
           Go back home
         </a>
@@ -87,29 +86,33 @@ export const Route = createRootRoute({
   shellComponent: RootDocument,
 });
 
+function GTag() {
+  return (
+    <>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-EM57W05E0Z" />
+      <script>
+        {`
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+
+gtag('config', 'G-EM57W05E0Z');
+`}
+      </script>
+    </>
+  );
+}
+
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
       <head>
         <HeadContent />
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-EM57W05E0Z" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-
-              gtag('config', 'G-EM57W05E0Z');
-            `,
-          }}
-        />
+        <GTag />
       </head>
       <body>
         {children}
-        {typeof window !== "undefined" && import.meta.env.DEV ? (
-          <ClientDevtools />
-        ) : null}
+        {import.meta.env.DEV ? <ClientDevtools /> : null}
         <Scripts />
       </body>
     </html>
@@ -117,35 +120,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 }
 
 function ClientDevtools() {
-  const [node, setNode] = useState<React.ReactNode>(null);
-  // Use a dynamic import to avoid bundling devtools into the server build.
-  useEffect(() => {
-    let mounted = true;
-    Promise.all([
-      import("@tanstack/react-devtools"),
-      import("@tanstack/react-router-devtools"),
-    ]).then(([devtools, routerDevtools]) => {
-      if (!mounted) return;
-      // biome-ignore lint/suspicious/noExplicitAny: Devtools packages don't export proper types
-      const { TanstackDevtools } = devtools as Record<string, any>;
-      const { TanStackRouterDevtoolsPanel } =
-        // biome-ignore lint/suspicious/noExplicitAny: Devtools packages don't export proper types
-        routerDevtools as Record<string, any>;
-      setNode(
-        <TanstackDevtools
-          config={{ position: "bottom-left" }}
-          plugins={[
-            {
-              name: "Tanstack Router",
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />,
-      );
-    });
-    return () => {
-      mounted = false;
-    };
-  }, []);
-  return node;
+  return (
+    <TanStackDevtools
+      config={{ position: 'bottom-left' }}
+      plugins={[
+        {
+          name: 'Tanstack Router',
+          render: <TanStackRouterDevtoolsPanel />,
+        },
+      ]}
+    />
+  );
 }

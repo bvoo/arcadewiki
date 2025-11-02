@@ -1,8 +1,8 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getButtonTypeBadge, type ControllerWithSlug } from "@/data/controllers";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { type ControllerWithSlug, getButtonTypeBadge } from '@/data/controllers';
 
 type ControllerCardProps = ControllerWithSlug;
 
@@ -18,23 +18,17 @@ export function ControllerCard({
   company,
   controller,
 }: ControllerCardProps) {
-  const usd = new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
+  const usd = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
     maximumFractionDigits: 0,
   });
-  const { label: buttonLabel, variant: buttonVariant } =
-    getButtonTypeBadge(buttonType);
+  const { label: buttonLabel, variant: buttonVariant } = getButtonTypeBadge(buttonType);
 
   return (
-    <Card
-      key={slug}
-      className="group hover:border-primary/50 transition-colors py-4"
-    >
+    <Card key={slug} className="group py-4 transition-colors hover:border-primary/50">
       <CardHeader>
-        <CardTitle className="text-lg group-hover:text-primary transition-colors">
-          {name}
-        </CardTitle>
+        <CardTitle className="text-lg transition-colors group-hover:text-primary">{name}</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-2 text-sm">
@@ -53,10 +47,9 @@ export function ControllerCard({
         {dimensionsMm && (
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Dimensions</span>
-            <span className="font-mono text-right">
-              {dimensionsMm.width} × {dimensionsMm.depth} ×{" "}
-              {dimensionsMm.height}
-              <span className="text-muted-foreground text-xs ml-1">mm</span>
+            <span className="text-right font-mono">
+              {dimensionsMm.width} × {dimensionsMm.depth} × {dimensionsMm.height}
+              <span className="ml-1 text-muted-foreground text-xs">mm</span>
             </span>
           </div>
         )}
@@ -64,9 +57,9 @@ export function ControllerCard({
         {weightGrams && (
           <div className="flex items-center justify-between">
             <span className="text-muted-foreground">Weight</span>
-            <span className="font-mono text-right">
+            <span className="text-right font-mono">
               {weightGrams}
-              <span className="text-muted-foreground text-xs ml-1">g</span>
+              <span className="ml-1 text-muted-foreground text-xs">g</span>
             </span>
           </div>
         )}
@@ -74,7 +67,7 @@ export function ControllerCard({
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Button Type</span>
           {buttonLabel ? (
-            <Badge variant={buttonVariant} className="font-mono font-bold">
+            <Badge variant={buttonVariant} className="font-bold font-mono">
               {buttonLabel}
             </Badge>
           ) : null}
@@ -82,11 +75,8 @@ export function ControllerCard({
 
         <div className="flex items-center justify-between">
           <span className="text-muted-foreground">Availability</span>
-          <Badge
-            variant={currentlySold ? "default" : "secondary"}
-            className="font-mono"
-          >
-            {currentlySold ? "In Stock" : "Not Sold"}
+          <Badge variant={currentlySold ? 'default' : 'secondary'} className="font-mono">
+            {currentlySold ? 'In Stock' : 'Not Sold'}
           </Badge>
         </div>
         <Button asChild variant="ghost" className="w-full">

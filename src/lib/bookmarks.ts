@@ -1,4 +1,4 @@
-const BOOKMARKS_KEY = "arcade-wiki-bookmarks";
+const BOOKMARKS_KEY = 'arcade-wiki-bookmarks';
 
 export interface Bookmark {
   company: string;
@@ -7,7 +7,7 @@ export interface Bookmark {
 }
 
 export function getBookmarks(): Bookmark[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === 'undefined') return [];
 
   try {
     const stored = localStorage.getItem(BOOKMARKS_KEY);
@@ -19,16 +19,12 @@ export function getBookmarks(): Bookmark[] {
 
 export function isBookmarked(company: string, controller: string): boolean {
   const bookmarks = getBookmarks();
-  return bookmarks.some(
-    (b) => b.company === company && b.controller === controller,
-  );
+  return bookmarks.some((b) => b.company === company && b.controller === controller);
 }
 
 export function toggleBookmark(company: string, controller: string): boolean {
   const bookmarks = getBookmarks();
-  const index = bookmarks.findIndex(
-    (b) => b.company === company && b.controller === controller,
-  );
+  const index = bookmarks.findIndex((b) => b.company === company && b.controller === controller);
 
   if (index >= 0) {
     bookmarks.splice(index, 1);

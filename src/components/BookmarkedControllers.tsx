@@ -1,10 +1,10 @@
-import { getBookmarks, toggleBookmark } from "@/lib/bookmarks";
-import { getAllControllerDocs } from "@/lib/controllers.content";
-import type { ColumnDef } from "@tanstack/react-table";
-import { Bookmark } from "lucide-react";
-import React from "react";
-import type { ControllerWithSlug } from "../data/controllers";
-import { ControllersTable } from "./ControllersTable";
+import type { ColumnDef } from '@tanstack/react-table';
+import { Bookmark } from 'lucide-react';
+import React from 'react';
+import { getBookmarks, toggleBookmark } from '@/lib/bookmarks';
+import { getAllControllerDocs } from '@/lib/controllers.content';
+import type { ControllerWithSlug } from '../data/controllers';
+import { ControllersTable } from './ControllersTable';
 
 type Row = ControllerWithSlug;
 
@@ -12,9 +12,7 @@ interface BookmarkedControllersProps {
   enableComparison?: boolean;
 }
 
-export function BookmarkedControllers({
-  enableComparison = false,
-}: BookmarkedControllersProps) {
+export function BookmarkedControllers({ enableComparison = false }: BookmarkedControllersProps) {
   const [bookmarks, setBookmarks] = React.useState(getBookmarks());
   const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
 
@@ -23,9 +21,9 @@ export function BookmarkedControllers({
       setBookmarks(getBookmarks());
       forceUpdate();
     };
-    window.addEventListener("storage", handleStorage);
+    window.addEventListener('storage', handleStorage);
     return () => {
-      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener('storage', handleStorage);
     };
   }, []);
 
@@ -33,10 +31,7 @@ export function BookmarkedControllers({
   const bookmarkedData: ControllerWithSlug[] = React.useMemo(() => {
     return bookmarks
       .map((b) => {
-        const doc = allDocs.find(
-          (d) =>
-            d.meta.company === b.company && d.meta.controller === b.controller,
-        );
+        const doc = allDocs.find((d) => d.meta.company === b.company && d.meta.controller === b.controller);
         if (!doc) return null;
         return {
           ...doc.meta,
@@ -49,16 +44,13 @@ export function BookmarkedControllers({
   if (bookmarkedData.length === 0) return null;
 
   const nameColumnWithBookmark: ColumnDef<Row, unknown> = {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: 'name',
+    header: 'Name',
     cell: (info) => {
       const r = info.row.original as Row;
       return (
         <div className="flex items-center gap-2">
-          <a
-            href={`/controllers/${r.company}/${r.controller}`}
-            className="text-white hover:underline font-bold"
-          >
+          <a href={`/controllers/${r.company}/${r.controller}`} className="font-bold text-white hover:underline">
             {info.getValue<string>()}
           </a>
           <button
@@ -69,7 +61,7 @@ export function BookmarkedControllers({
               setBookmarks(getBookmarks());
               forceUpdate();
             }}
-            className="text-white hover:scale-105 transition-all shrink-0"
+            className="shrink-0 text-white transition-all hover:scale-105"
             title="Remove bookmark"
           >
             <Bookmark className="size-4 fill-white" />
@@ -81,11 +73,9 @@ export function BookmarkedControllers({
 
   return (
     <>
-      <div className="flex items-center gap-2 mb-2">
-        <h2 className="text-xl font-bold text-white">Bookmarked Controllers</h2>
-        <span className="text-sm text-muted-foreground font-mono">
-          ({bookmarkedData.length})
-        </span>
+      <div className="mb-2 flex items-center gap-2">
+        <h2 className="font-bold text-white text-xl">Bookmarked Controllers</h2>
+        <span className="font-mono text-muted-foreground text-sm">({bookmarkedData.length})</span>
       </div>
       <ControllersTable
         data={bookmarkedData}
