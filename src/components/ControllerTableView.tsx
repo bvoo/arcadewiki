@@ -13,10 +13,10 @@ export interface ControllerTableViewProps<TData> {
 export function ControllerTableView<TData>({ table, hidePagination = false }: ControllerTableViewProps<TData>) {
   return (
     <>
-      <Card className="overflow-hidden border-border">
-        <CardContent className="p-0">
+      <Card className='overflow-hidden border-border'>
+        <CardContent className='p-0'>
           <Table>
-            <TableHeader className="text-secondary-foreground">
+            <TableHeader className='text-secondary-foreground'>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
@@ -42,13 +42,13 @@ export function ControllerTableView<TData>({ table, hidePagination = false }: Co
                             role={header.column.getCanSort() ? 'button' : undefined}
                             tabIndex={header.column.getCanSort() ? 0 : undefined}
                           >
-                            <span className="inline-flex items-center gap-1">
+                            <span className='inline-flex items-center gap-1'>
                               {flexRender(header.column.columnDef.header, header.getContext())}
                               {header.column.getCanSort() ? (
                                 header.column.getIsSorted() === 'asc' ? (
-                                  <ChevronUp className="size-4" aria-hidden />
+                                  <ChevronUp className='size-4' aria-hidden />
                                 ) : header.column.getIsSorted() === 'desc' ? (
-                                  <ChevronDown className="size-4" aria-hidden />
+                                  <ChevronDown className='size-4' aria-hidden />
                                 ) : null
                               ) : null}
                             </span>
@@ -62,9 +62,9 @@ export function ControllerTableView<TData>({ table, hidePagination = false }: Co
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} className="hover:bg-secondary/20">
+                <TableRow key={row.id} className='hover:bg-secondary/20'>
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-4 py-3">
+                    <TableCell key={cell.id} className='px-4 py-3'>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
@@ -76,36 +76,36 @@ export function ControllerTableView<TData>({ table, hidePagination = false }: Co
       </Card>
       {!hidePagination && (
         <>
-          <div className="h-4" />
-          <div className="flex flex-wrap items-center gap-2">
+          <div className='h-4' />
+          <div className='flex flex-wrap items-center gap-2'>
             <Button
-              variant="outline"
-              size="sm"
+              variant='outline'
+              size='sm'
               onClick={() => table.setPageIndex(0)}
               disabled={!table.getCanPreviousPage()}
             >
-              <ChevronFirst className="size-4" aria-hidden />
+              <ChevronFirst className='size-4' aria-hidden />
             </Button>
             <Button
-              variant="outline"
-              size="sm"
+              variant='outline'
+              size='sm'
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
             >
-              <ChevronLeft className="size-4" aria-hidden />
+              <ChevronLeft className='size-4' aria-hidden />
             </Button>
-            <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-              <ChevronRight className="size-4" aria-hidden />
+            <Button variant='outline' size='sm' onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+              <ChevronRight className='size-4' aria-hidden />
             </Button>
             <Button
-              variant="outline"
-              size="sm"
+              variant='outline'
+              size='sm'
               onClick={() => table.setPageIndex(table.getPageCount() - 1)}
               disabled={!table.getCanNextPage()}
             >
-              <ChevronLast className="size-4" aria-hidden />
+              <ChevronLast className='size-4' aria-hidden />
             </Button>
-            <span className="flex items-center gap-1">
+            <span className='flex items-center gap-1'>
               <div>Page</div>
               <strong>
                 {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
@@ -115,7 +115,7 @@ export function ControllerTableView<TData>({ table, hidePagination = false }: Co
               value={String(table.getState().pagination.pageSize)}
               onValueChange={(value) => table.setPageSize(Number(value))}
             >
-              <SelectTrigger size="sm" className="w-[120px]">
+              <SelectTrigger size='sm' className='w-[120px]'>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

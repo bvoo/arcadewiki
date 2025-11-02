@@ -62,20 +62,20 @@ export function SwitchTypeDropdown({
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
-            variant="outline"
-            size="sm"
+            variant='outline'
+            size='sm'
             className={buttonClasses}
             style={widthStyle}
             onMouseEnter={prefetch}
             onFocus={prefetch}
           >
-            <span className="truncate" title={summary}>
+            <span className='truncate' title={summary}>
               {summary}
             </span>
-            <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+            <ChevronDown className='size-4 shrink-0 text-muted-foreground' aria-hidden />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-(--radix-dropdown-menu-trigger-width)">
+        <DropdownMenuContent align='start' className='w-(--radix-dropdown-menu-trigger-width)'>
           {items.map((item) => (
             <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
           ))}
@@ -86,8 +86,8 @@ export function SwitchTypeDropdown({
 
   return (
     <Button
-      variant="outline"
-      size="sm"
+      variant='outline'
+      size='sm'
       className={buttonClasses}
       style={widthStyle}
       disabled={loading}
@@ -104,10 +104,10 @@ export function SwitchTypeDropdown({
       onFocus={prefetch}
       onMouseEnter={prefetch}
     >
-      <span className="truncate" title={summary}>
+      <span className='truncate' title={summary}>
         {loading ? 'Loading…' : summary}
       </span>
-      <ChevronDown className="size-4 shrink-0 text-muted-foreground" aria-hidden />
+      <ChevronDown className='size-4 shrink-0 text-muted-foreground' aria-hidden />
     </Button>
   );
 }

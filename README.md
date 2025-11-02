@@ -14,25 +14,23 @@ Each controller page uses YAML frontmatter that maps to `ControllerFrontmatter` 
 
 Required/optional fields:
 
+<!-- prettier-ignore -->
 ```yaml
-id: the-orca #                      string; defaults to folder name
-name: The Orca #                    string; display name
-maker: Orca Analog Controllers #    string; human-friendly maker
-company: orca-analog-controllers #  string; company slug (folder name)
-controller: the-orca #              string; controller slug (folder name)
-buttonType: analog #                string; "digital" or "analog"
-priceUSD: 249.0 #                   number; omit if unknown
-currentlySold: true #               boolean
-releaseYear: 2024 #                 number
-switchType: #                       string or string[]
+name: The Orca                  # string; display name
+maker: Orca Analog Controllers  # string; human-friendly maker
+buttonType: analog              # string; "digital" or "analog"
+priceUSD: 249.0                 # number; omit if unknown
+currentlySold: true             # boolean
+releaseYear: 2024               # number
+switchType:                     # string or string[]
   - Everglide Rice Pudding Hall Effect
   - Kailh Speed Silver
-weightGrams: 1000 #                 number; omit if unknown
-dimensionsMm: #                     object; omit fields if unknown
+weightGrams: 1000               # number; omit if unknown
+dimensionsMm:                   # object; omit fields if unknown
   width: 331
   depth: 185
   height: 39
-link: https://example.com #         optional external link
+link: https://example.com       # optional external link
 ```
 
 After the frontmatter separator `---`, write normal Markdown/MDX for the page body (e.g., Overview, Features, Pros/Cons, etc.).

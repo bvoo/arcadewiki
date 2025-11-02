@@ -1,88 +1,62 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import { Bookmark } from 'lucide-react';
-import React from 'react';
-import { getBookmarks, toggleBookmark } from '@/lib/bookmarks';
-import { getAllControllerDocs } from '@/lib/controllers.content';
-import type { ControllerWithSlug } from '../data/controllers';
+import { BookmarkIcon } from 'lucide-react';
+import { useMemo } from 'react';
+import type { ControllerData } from '@/lib/utils';
+import { useLazyStore } from '@/stores';
+import { bookmarkStore, removeBookmark } from '@/stores/bookmarkStore';
 import { ControllersTable } from './ControllersTable';
 
-type Row = ControllerWithSlug;
-
-interface BookmarkedControllersProps {
-  enableComparison?: boolean;
-}
-
-export function BookmarkedControllers({ enableComparison = false }: BookmarkedControllersProps) {
-  const [bookmarks, setBookmarks] = React.useState(getBookmarks());
-  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
-
-  React.useEffect(() => {
-    const handleStorage = () => {
-      setBookmarks(getBookmarks());
-      forceUpdate();
-    };
-    window.addEventListener('storage', handleStorage);
-    return () => {
-      window.removeEventListener('storage', handleStorage);
-    };
-  }, []);
-
-  const allDocs = getAllControllerDocs();
-  const bookmarkedData: ControllerWithSlug[] = React.useMemo(() => {
-    return bookmarks
-      .map((b) => {
-        const doc = allDocs.find((d) => d.meta.company === b.company && d.meta.controller === b.controller);
-        if (!doc) return null;
-        return {
-          ...doc.meta,
-          slug: doc.slug,
-        } satisfies ControllerWithSlug;
-      })
-      .filter(Boolean) as ControllerWithSlug[];
-  }, [bookmarks, allDocs]);
-
-  if (bookmarkedData.length === 0) return null;
-
-  const nameColumnWithBookmark: ColumnDef<Row, unknown> = {
+function BookmarkedControllersImpl({ controllers }: { controllers: ControllerData[] }) {
+  const nameColumnWithBookmark = {
     accessorKey: 'name',
     header: 'Name',
     cell: (info) => {
-      const r = info.row.original as Row;
+      const r = info.row.original;
+
       return (
-        <div className="flex items-center gap-2">
-          <a href={`/controllers/${r.company}/${r.controller}`} className="font-bold text-white hover:underline">
+        <div className='flex items-center gap-2'>
+          <a
+            href={`/controllers/${r.companySlug}/${r.controllerSlug}`}
+            className='font-bold text-white hover:underline'
+          >
             {info.getValue<string>()}
           </a>
           <button
-            type="button"
+            type='button'
             onClick={(e) => {
               e.preventDefault();
-              toggleBookmark(r.company, r.controller);
-              setBookmarks(getBookmarks());
-              forceUpdate();
+              removeBookmark(r.companySlug, r.controllerSlug);
             }}
-            className="shrink-0 text-white transition-all hover:scale-105"
-            title="Remove bookmark"
+            className='shrink-0 text-white transition-all hover:scale-105'
+            title='Remove bookmark'
           >
-            <Bookmark className="size-4 fill-white" />
+            <BookmarkIcon className='size-4 fill-white' />
           </button>
         </div>
       );
     },
-  };
+  } satisfies ColumnDef<ControllerData>;
 
   return (
     <>
-      <div className="mb-2 flex items-center gap-2">
-        <h2 className="font-bold text-white text-xl">Bookmarked Controllers</h2>
-        <span className="font-mono text-muted-foreground text-sm">({bookmarkedData.length})</span>
+      <div className='mb-2 flex items-center gap-2'>
+        <h2 className='font-bold text-white text-xl'>Bookmarked Controllers</h2>
+        <span className='font-mono text-muted-foreground text-sm'>({controllers.length})</span>
       </div>
-      <ControllersTable
-        data={bookmarkedData}
-        nameColumnOverride={nameColumnWithBookmark}
-        hidePagination={true}
-        enableComparison={enableComparison}
-      />
+      <ControllersTable controllers={controllers} nameColumnOverride={nameColumnWithBookmark} hidePagination={true} />
     </>
   );
+}
+
+export function BookmarkedControllers({ controllers }: { controllers: ControllerData[] }) {
+  const [$bookmarks] = useLazyStore(bookmarkStore, []);
+
+  const bookmarkedData: ControllerData[] = useMemo(() => {
+    return $bookmarks
+      .map((b) => controllers.find((entry) => entry.companySlug === b.company && entry.controllerSlug === b.controller))
+      .filter((x) => x != null);
+  }, [$bookmarks, controllers]);
+
+  // biome-ignore lint/complexity/noUselessFragments: invalid hook call error without fragment
+  return bookmarkedData.length === 0 ? <></> : <BookmarkedControllersImpl controllers={bookmarkedData} />;
 }

@@ -1,0 +1,119 @@
+---
+import { BookmarkButton } from '@/components/BookmarkButton';
+import LinkButton from '@/components/LinkButton';
+import { SwitchTypeDropdown } from '@/components/SwitchTypeDropdown';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { USD } from '@/lib/format';
+import { cn, getButtonTypeBadge, type ControllerData } from '@/lib/utils';
+import { Link2Icon, Link2OffIcon, LinkIcon } from 'lucide-react';
+
+type Props = {
+  data: ControllerData;
+  class?: string;
+};
+
+const { data, class: className, ...rest } = Astro.props;
+---
+
+<Card className={cn('w-full md:max-w-md', className)} {...rest}>
+  <CardContent className="p-3">
+    <div class="flex flex-col gap-4 md:flex-row md:justify-between">
+      {/* left col - details */}
+      <div class="grid grid-cols-[auto_auto] gap-2 text-sm grow items-center">
+        {
+          data.currentlySold !== undefined ? (
+            <>
+              <span class="text-muted-foreground">Availability:</span>
+              <Badge variant={data.currentlySold ? 'default' : 'secondary'}>
+                {data.currentlySold ? 'In stock' : 'Not sold'}
+              </Badge>
+            </>
+          ) : null
+        }
+
+        <span class="text-muted-foreground">Buttons:</span>
+        {
+          (() => {
+            const { label, variant } = getButtonTypeBadge(data.buttonType);
+            return label ? (
+              <Badge variant={variant} className="font-bold font-mono">
+                {label}
+              </Badge>
+            ) : null;
+          })()
+        }
+
+        <span class="text-muted-foreground">Switches:</span>
+        {
+          data.switchType.length ? (
+            <SwitchTypeDropdown
+              client:idle
+              summary={data.switchType.length === 1 ? data.switchType[0] : `${data.switchType.length} types`}
+              items={data.switchType}
+              buttonClassName="justify-between max-w-full min-w-32"
+            />
+          ) : (
+            <span class="text-muted-foreground">—</span>
+          )
+        }
+
+        <span class="text-muted-foreground">Release Year:</span>
+        <span class="font-mono tabular-nums">{data.releaseYear}</span>
+
+        <span class="text-muted-foreground">Weight:</span>
+        {
+          data.weightGrams ? (
+            <span class="font-mono tabular-nums">
+              {data.weightGrams}<span class="text-muted-foreground text-xs">g</span>
+            </span>
+          ) : (
+            <span class="text-muted-foreground">—</span>
+          )
+        }
+
+        <span class="text-muted-foreground">Dimensions:</span>
+        {
+          data.dimensionsMm ? (
+            <span class="font-mono tabular-nums">
+              {data.dimensionsMm.width} × {data.dimensionsMm.depth} × {data.dimensionsMm.height}
+              <span class="text-muted-foreground text-xs">mm</span>
+            </span>
+          ) : (
+            <span class="text-muted-foreground">—</span>
+          )
+        }
+
+        <span class="text-muted-foreground">Price:</span>
+        {
+          data.priceUSD ? (
+            <span class="font-mono tabular-nums">{USD.format(data.priceUSD)}</span>
+          ) : (
+            <span class="text-muted-foreground">—</span>
+          )
+        }
+      </div>
+
+      {/* right col - buttons/links */}
+      <div class="flex flex-col gap-2 md:items-end">
+        <BookmarkButton client:load company={data.companySlug} controller={data.controllerSlug} />
+
+        {
+          data.link ? (
+            <LinkButton
+              href={data.link}
+              variant="outline"
+              size="sm"
+              className="w-full"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <LinkIcon className="mr-2 size-4" />
+              Official link
+            </LinkButton>
+          ) : null
+        }
+      </div>
+    </div>
+  </CardContent>
+</Card>

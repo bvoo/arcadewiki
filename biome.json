@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.3.2/schema.json",
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
@@ -8,14 +8,14 @@
   "files": {
     "ignoreUnknown": false,
     "includes": [
-      "scripts/**/*.ts",
-      "src/**/*.ts",
-      "src/**/*.tsx",
-      "src/**/*.css",
+      "**/*.mjs",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.css",
+      "**/*.json",
+      "**/*.jsonc",
       "!src/routeTree.gen.ts",
-      ".vscode/*.json",
-      "index.html",
-      "vite.config.js"
+      "!**/.astro"
     ]
   },
   "formatter": {
@@ -35,6 +35,14 @@
       "a11y": {
         "noStaticElementInteractions": "off",
         "useSemanticElements": "off"
+      },
+      "style": {
+        "useConst": "off",
+        "useImportType": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "off",
+        "noUnusedImports": "off"
       }
     }
   },
@@ -49,7 +57,8 @@
   "javascript": {
     "formatter": {
       "quoteStyle": "single",
-      "semicolons": "always"
+      "semicolons": "always",
+      "jsxQuoteStyle": "single"
     }
   }
 }

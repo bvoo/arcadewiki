@@ -1,3 +1,4 @@
+import { useStore } from '@nanostores/react';
 import { compareItems, type RankingInfo, rankItem } from '@tanstack/match-sorter-utils';
 import {
   type ColumnDef,
@@ -12,11 +13,9 @@ import {
 } from '@tanstack/react-table';
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
 import { USD } from '@/lib/format';
-import { type ControllerWithSlug, getButtonTypeBadge } from '../data/controllers';
-import { isInComparison, toggleComparison } from '../lib/comparison';
-import { getAllControllerDocs } from '../lib/controllers.content';
+import { globalFilter } from '@/stores/filterStore';
+import { type ControllerData, getButtonTypeBadge } from '../lib/utils';
 import { ControllerTableView } from './ControllerTableView';
 import { SwitchTypeDropdown } from './SwitchTypeDropdown';
 
@@ -29,86 +28,47 @@ declare module '@tanstack/react-table' {
   }
 }
 
-type Row = ControllerWithSlug;
+type Row = ControllerData;
 
 interface ControllersTableProps {
   globalFilter?: string;
-  data?: Row[];
+  controllers: Row[];
   nameColumnOverride?: ColumnDef<Row, unknown>;
   hidePagination?: boolean;
   enableComparison?: boolean;
 }
 
 export function ControllersTable({
-  globalFilter = '',
-  data,
+  controllers: rows,
   nameColumnOverride,
   hidePagination = false,
-  enableComparison = false,
 }: ControllersTableProps) {
+  const $globalFilter = useStore(globalFilter);
+
   const [sorting, setSorting] = React.useState<SortingState>([{ id: 'releaseYear', desc: true }]);
-  const [, forceUpdate] = React.useReducer((x) => x + 1, 0);
-
-  const defaultRows: Row[] = React.useMemo(
-    () =>
-      getAllControllerDocs().map((d) => ({
-        ...d.meta,
-        slug: d.slug,
-      })),
-    [],
-  );
-
-  const rows = data || defaultRows;
 
   const maxSwitchChars = React.useMemo(() => {
     let max = 0;
     for (const r of rows) {
-      const items = r.switchType ?? [];
-      for (const s of items) {
+      for (const s of r.switchType) {
         if (s && s.length > max) max = s.length;
       }
     }
     return Math.max(14, max + 6);
   }, [rows]);
 
-  React.useEffect(() => {
-    if (!enableComparison) return;
-    const handleStorage = () => forceUpdate();
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
-  }, [enableComparison]);
-
-  const comparisonColumn: ColumnDef<Row, unknown> = React.useMemo(
-    () => ({
-      id: 'compare',
-      header: 'Compare',
-      cell: (info) => {
-        const r = info.row.original as Row;
-        const checked = isInComparison(r.company, r.controller);
-        return (
-          <Checkbox
-            checked={checked}
-            onCheckedChange={() => {
-              toggleComparison(r.company, r.controller);
-              forceUpdate();
-            }}
-          />
-        );
-      },
-    }),
-    [],
-  );
-
   const columns = React.useMemo<ColumnDef<Row, unknown>[]>(
     () => [
-      ...(enableComparison ? [comparisonColumn] : []),
       nameColumnOverride || {
         accessorKey: 'name',
         header: 'Name',
         cell: (info) => {
-          const r = info.row.original as Row;
+          const r = info.row.original;
           return (
-            <a href={`/controllers/${r.company}/${r.controller}`} className="font-bold text-white hover:underline">
+            <a
+              href={`/controllers/${r.companySlug}/${r.controllerSlug}`}
+              className='font-bold text-white hover:underline'
+            >
               {info.getValue<string>()}
             </a>
           );
@@ -121,9 +81,8 @@ export function ControllersTable({
         header: 'Maker',
         filterFn: 'includesString',
         cell: (info) => {
-          const r = info.row.original as Row;
           return (
-            <a href={`/makers/${r.company}`} className="font-medium text-primary hover:underline">
+            <a href={`/makers/${info.row.original.companySlug}`} className='font-medium text-primary hover:underline'>
               {info.getValue<string>()}
             </a>
           );
@@ -136,7 +95,7 @@ export function ControllersTable({
           const buttonType = getValue<Row['buttonType'] | undefined>();
           const { label, variant } = getButtonTypeBadge(buttonType);
           return label ? (
-            <Badge variant={variant} className="font-bold font-mono">
+            <Badge variant={variant} className='font-bold font-mono'>
               {label}
             </Badge>
           ) : (
@@ -160,8 +119,9 @@ export function ControllersTable({
         header: 'Weight',
         cell: ({ row }) =>
           row.original.weightGrams ? (
-            <div className="text-right font-mono tabular-nums">
-              {row.original.weightGrams} <span className="text-muted-foreground text-xs">g</span>
+            <div className='text-right font-mono tabular-nums'>
+              {row.original.weightGrams}
+              <span className='text-muted-foreground text-xs'>g</span>
             </div>
           ) : (
             ''
@@ -177,9 +137,9 @@ export function ControllersTable({
         cell: ({ row }) => {
           const d = row.original.dimensionsMm;
           return d ? (
-            <div className="text-right font-mono tabular-nums">
+            <div className='text-right font-mono tabular-nums'>
               {d.width} × {d.depth} × {d.height}
-              <span className="ml-1 text-muted-foreground text-xs">mm</span>
+              <span className='ml-1 text-muted-foreground text-xs'>mm</span>
             </div>
           ) : (
             ''
@@ -197,25 +157,25 @@ export function ControllersTable({
       {
         accessorKey: 'releaseYear',
         header: 'Release',
-        cell: ({ getValue }) => <div className="text-right font-mono tabular-nums">{getValue<number>()}</div>,
+        cell: ({ getValue }) => <div className='text-right font-mono tabular-nums'>{getValue<number>()}</div>,
       },
       {
         accessorKey: 'priceUSD',
         header: 'Price',
         cell: ({ getValue }) => {
           const v = getValue<number | undefined>();
-          return v ? <div className="text-right font-mono tabular-nums">{USD.format(v)}</div> : '';
+          return v ? <div className='text-right font-mono tabular-nums'>{USD.format(v)}</div> : '';
         },
       },
     ],
-    [nameColumnOverride, enableComparison, comparisonColumn, maxSwitchChars],
+    [nameColumnOverride, maxSwitchChars],
   );
 
   const table = useReactTable<Row>({
     data: rows,
     columns,
     filterFns: { fuzzy: fuzzyFilter },
-    state: { globalFilter, sorting },
+    state: { globalFilter: $globalFilter, sorting },
     onSortingChange: setSorting,
     globalFilterFn: 'fuzzy',
     getCoreRowModel: getCoreRowModel(),
