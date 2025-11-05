@@ -1,0 +1,93 @@
+---
+import LinkButton from '@/components/LinkButton';
+import MakerCard from '@/components/MakerCard.astro';
+import Layout from '@/layouts/Layout.astro';
+import { baseUrl } from '@/lib/utils';
+import { getCollection } from 'astro:content';
+import { ArrowLeftIcon } from 'lucide-react';
+
+const title = 'All Makers | arcade.wiki';
+const description = 'Browse controller makers. Hitbox, Frame1, and more.';
+const url = `${baseUrl}/makers`;
+
+const keywords = ['arcade controller makers', 'fightstick brands', 'hori', 'qanba', 'razer', 'madcatz'];
+
+const collection = await getCollection('controllers');
+
+export type MakerStats = {
+  company: string;
+  maker: string;
+  controllerCount: number;
+  currentlySoldCount: number;
+  avgPrice: number | null;
+  latestYear: number;
+};
+
+const makerMap = new Map<string, MakerStats>();
+
+for (const doc of collection) {
+  const { companySlug, maker } = doc.data;
+  if (!makerMap.has(companySlug)) {
+    makerMap.set(companySlug, {
+      company: companySlug,
+      maker,
+      controllerCount: 0,
+      currentlySoldCount: 0,
+      avgPrice: null,
+      latestYear: 0,
+    });
+  }
+
+  const stats = makerMap.get(companySlug);
+  if (!stats) continue;
+
+  stats.controllerCount++;
+  if (doc.data.currentlySold) stats.currentlySoldCount++;
+  if (doc.data.releaseYear > stats.latestYear) {
+    stats.latestYear = doc.data.releaseYear;
+  }
+}
+
+for (const [company, stats] of makerMap.entries()) {
+  const companyEntries = collection.filter((entry) => entry.data.companySlug === company);
+  const pricesAvailable = companyEntries.filter((entry) => entry.data.priceUSD);
+  if (pricesAvailable.length > 0) {
+    const sum = pricesAvailable.reduce((acc, entry) => acc + (entry.data.priceUSD || 0), 0);
+    stats.avgPrice = sum / pricesAvailable.length;
+  }
+}
+
+const makers = Array.from(makerMap.values()).sort((a, b) => {
+  if (b.controllerCount !== a.controllerCount) {
+    return b.controllerCount - a.controllerCount;
+  }
+
+  return a.maker.localeCompare(b.maker);
+});
+---
+
+<Layout
+  title={title}
+  description={description}
+  url={url}
+  keywords={keywords}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Makers' }]}
+>
+  <meta slot="head" name="twitter:card" content="summary" />
+
+  <LinkButton slot="header-extra" href="/" variant="ghost" size="sm">
+    <ArrowLeftIcon className="mr-2 size-4" />
+    Back to List
+  </LinkButton>
+
+  <div class="mx-auto max-w-6xl w-full p-6">
+    <div class="mb-8">
+      <h1 class="mb-2 font-bold text-3xl">Makers</h1>
+      <p class="text-muted-foreground">Browse {makers.length} makers and their controllers</p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {makers.map((stats) => <MakerCard stats={stats} />)}
+    </div>
+  </div>
+</Layout>

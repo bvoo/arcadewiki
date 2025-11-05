@@ -1,0 +1,183 @@
+---
+import InfoCard from '@/components/InfoCard.astro';
+import LinkButton from '@/components/LinkButton';
+import ProseImage from '@/components/ProseImage.astro';
+import Separator from '@/components/Separator.astro';
+import SimilarControllers from '@/components/similarControllers/SimilarControllers.astro';
+import Layout from '@/layouts/Layout.astro';
+import { USD } from '@/lib/format';
+import { getSimilarControllers } from '@/lib/similarControllers';
+import { baseUrl } from '@/lib/utils';
+import type { GetStaticPaths } from 'astro';
+import { getCollection, render } from 'astro:content';
+import { ArrowLeftIcon } from 'lucide-react';
+
+export const getStaticPaths = (async () => {
+  const controllers = await getCollection('controllers');
+
+  return controllers.map((entry) => ({
+    params: { company: entry.data.companySlug, controller: entry.data.controllerSlug },
+    props: { entry },
+  }));
+}) satisfies GetStaticPaths;
+
+const { company, controller } = Astro.params;
+const { entry } = Astro.props;
+
+const { Content } = await render(entry);
+
+const similarControllers = await getSimilarControllers(entry, 3);
+
+const meta = entry.data;
+
+const title = `${meta.name} by ${meta.maker} | arcade.wiki`;
+
+let items = [
+  meta.buttonType && `features ${meta.buttonType} buttons`,
+  meta.weightGrams && `weighs ${meta.weightGrams}g`,
+  meta.priceUSD && `priced at ${USD.format(meta.priceUSD)}`,
+]
+  .filter(Boolean)
+  .join(', ');
+
+if (items.length > 0) {
+  items = items.charAt(0).toUpperCase() + items.slice(1);
+}
+
+const descriptionBase = `Detailed information for the ${meta.name} controller by ${meta.maker}.`;
+
+const description = items ? `${descriptionBase} ${items}.` : descriptionBase;
+const url = `${baseUrl}/controllers/${company}/${controller}`;
+const ogImageUrl = `${baseUrl}/og/${company}/${controller}.png`;
+
+// JSON-LD Structured Data
+const structuredData: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: entry.data.name,
+  image: ogImageUrl,
+  brand: {
+    '@type': 'Brand',
+    name: meta.maker,
+  },
+  description: description,
+  releaseDate: meta.releaseYear ? `${meta.releaseYear}-01-01` : undefined,
+};
+
+if (meta.priceUSD != null) {
+  structuredData.offers = {
+    '@type': 'Offer',
+    price: USD.format(meta.priceUSD).replace(/[^0-9.]/g, ''),
+    priceCurrency: 'USD',
+    availability: meta.currentlySold ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+    url: meta.link ?? undefined,
+    shippingDetails: {
+      '@type': 'OfferShippingDetails',
+      shippingRate: {
+        '@type': 'MonetaryAmount',
+        value: '0.00',
+        currency: 'USD',
+      },
+      shippingDestination: {
+        '@type': 'DefinedRegion',
+        addressCountry: 'Worldwide',
+      },
+    },
+    hasMerchantReturnPolicy: {
+      '@type': 'MerchantReturnPolicy',
+      returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+    },
+  };
+}
+
+if (meta.weightGrams != null) {
+  structuredData.weight = {
+    '@type': 'QuantitativeValue',
+    value: meta.weightGrams,
+    unitCode: 'GRM',
+  };
+}
+
+if (meta.dimensionsMm != null) {
+  structuredData.depth = {
+    '@type': 'QuantitativeValue',
+    value: meta.dimensionsMm.depth,
+    unitCode: 'MMT',
+  };
+  structuredData.width = {
+    '@type': 'QuantitativeValue',
+    value: meta.dimensionsMm.width,
+    unitCode: 'MMT',
+  };
+  structuredData.height = {
+    '@type': 'QuantitativeValue',
+    value: meta.dimensionsMm.height,
+    unitCode: 'MMT',
+  };
+}
+
+const keywords = [meta.name, meta.maker, 'arcade controller', 'arcade stick', meta.buttonType, 'fightstick'].filter(
+  (x) => x != null,
+);
+---
+
+<Layout
+  type="product"
+  title={title}
+  description={description}
+  url={url}
+  keywords={keywords}
+  editPage={`src/content/${company}/${controller}/index.mdx`}
+  breadcrumbs={[
+    { label: 'Home', href: '/' },
+    { label: entry.data.maker, href: `/makers/${company}` },
+    { label: entry.data.name },
+  ]}
+  ldJson={structuredData}
+>
+  <LinkButton href="/" variant="ghost" size="sm" slot="header-extra">
+    <ArrowLeftIcon className="mr-2 size-4" />
+    Back to List
+  </LinkButton>
+
+  <Fragment slot="head">
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="product:brand" content={meta.maker} />
+    {
+      meta.priceUSD && (
+        <>
+          <meta property="product:price:amount" content={USD.format(meta.priceUSD).replace(/[^0-9.]/g, '')} />
+          <meta property="product:price:currency" content="USD" />
+        </>
+      )
+    }
+    {
+      meta.currentlySold != null && (
+        <meta property="product:availability" content={meta.currentlySold ? 'in stock' : 'out of stock'} />
+      )
+    }
+  </Fragment>
+
+  <div class="flex grow flex-col p-6 pt-0 gap-6 max-w-6xl mx-auto w-full">
+    <article class="prose prose-invert max-w-none">
+      <h1 class="font-bold text-2xl md:hidden">{entry.data.name}</h1>
+      <p class="text-muted-foreground md:hidden">{entry.data.maker}</p>
+
+      <InfoCard data={entry.data} class="md:float-right md:mt-12 md:ml-6 md:mb-6" />
+
+      <h1 class="font-bold text-2xl hidden md:block">{entry.data.name}</h1>
+      <p class="text-muted-foreground hidden md:block">{entry.data.maker}</p>
+
+      <Content components={{ img: ProseImage }} />
+    </article>
+
+    <Separator />
+
+    <SimilarControllers controllers={similarControllers} />
+  </div>
+</Layout>

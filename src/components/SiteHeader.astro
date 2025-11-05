@@ -1,0 +1,26 @@
+---
+import { default as Breadcrumbs, type BreadcrumbItem } from './Breadcrumbs.astro';
+
+type Props = { breadcrumbs?: BreadcrumbItem[] };
+
+const { breadcrumbs } = Astro.props;
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-border border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
+>
+  <div class="flex w-full flex-col items-center gap-2 px-4 py-2 sm:h-14 sm:flex-row sm:gap-8 sm:px-6 sm:py-0">
+    <div class="flex w-full items-center gap-2">
+      <a href="/" class="flex items-center gap-2 font-bold font-mono text-lg transition-opacity hover:opacity-80">
+        {/* todo: figure out logo */}
+        <span>arcade.wiki</span>
+      </a>
+
+      <div class="ml-4 hidden sm:block">
+        {breadcrumbs && breadcrumbs.length > 0 && <Breadcrumbs items={breadcrumbs} />}
+      </div>
+
+      <div class="ml-auto"><slot /></div>
+    </div>
+  </div>
+</header>

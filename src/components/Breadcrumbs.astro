@@ -1,0 +1,35 @@
+---
+import { ChevronRight } from 'lucide-react';
+
+export type BreadcrumbItem = {
+  label: string;
+  href?: string;
+};
+
+type Props = { items: BreadcrumbItem[] };
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="Breadcrumb">
+  <ol class="flex items-center gap-2 text-muted-foreground text-sm">
+    {
+      items.map((item, index) => {
+        const isLast = index === items.length - 1;
+
+        return (
+          <li class="flex items-center gap-2">
+            {item.href && !isLast ? (
+              <a href={item.href} class="transition-colors hover:text-foreground">
+                {item.label}
+              </a>
+            ) : (
+              <span class={isLast ? 'font-medium text-foreground' : ''}>{item.label}</span>
+            )}
+            {!isLast && <ChevronRight className="size-4" aria-hidden="true" />}
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>

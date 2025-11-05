@@ -1,70 +1,52 @@
-import type { ControllerDoc } from "./controllers.content";
-import { getAllControllerDocs } from "./controllers.content";
+import { type CollectionEntry, getCollection } from 'astro:content';
 
 export interface SimilarController {
-  doc: ControllerDoc;
+  entry: CollectionEntry<'controllers'>;
   score: number;
   reasons: string[];
 }
 
-export function getSimilarControllers(
-  currentDoc: ControllerDoc,
+export async function getSimilarControllers(
+  entry: CollectionEntry<'controllers'>,
   limit = 3,
-): SimilarController[] {
-  const all = getAllControllerDocs();
-  const current = currentDoc.meta;
+): Promise<SimilarController[]> {
+  const others = await getCollection('controllers', (other) => entry.id !== other.id);
 
-  const scored = all
-    .filter((doc) => doc.slug !== currentDoc.slug)
-    .map((doc) => {
+  const scored = others
+    .map((other) => {
       let score = 0;
       const reasons: string[] = [];
-      const meta = doc.meta;
 
-      if (meta.maker === current.maker) {
+      if (other.data.companySlug === entry.data.companySlug) {
         score += 10;
-        reasons.push("Same maker (+10)");
+        reasons.push('Same maker (+10)');
       }
 
-      if (meta.buttonType === current.buttonType) {
+      if (other.data.buttonType === entry.data.buttonType) {
         score += 5;
-        reasons.push("Same button type (+5)");
+        reasons.push('Same button type (+5)');
       }
 
-      if (current.priceUSD && meta.priceUSD) {
-        const priceDiff =
-          Math.abs(meta.priceUSD - current.priceUSD) / current.priceUSD;
+      if (entry.data.priceUSD && other.data.priceUSD) {
+        const priceDiff = Math.abs(other.data.priceUSD - entry.data.priceUSD) / entry.data.priceUSD;
         if (priceDiff < 0.2) {
           score += 3;
-          reasons.push("Similar price (+3)");
+          reasons.push('Similar price (+3)');
         }
       }
 
-      const currentSwitches = Array.isArray(current.switchType)
-        ? current.switchType
-        : current.switchType
-          ? [current.switchType]
-          : [];
-      const metaSwitches = Array.isArray(meta.switchType)
-        ? meta.switchType
-        : meta.switchType
-          ? [meta.switchType]
-          : [];
-
-      const hasCommonSwitch = currentSwitches.some((s) =>
-        metaSwitches.includes(s),
-      );
+      const hasCommonSwitch = entry.data.switchType.some((s) => other.data.switchType.includes(s));
       if (hasCommonSwitch) {
         score += 4;
-        reasons.push("Matching switches (+4)");
+        reasons.push('Matching switches (+4)');
       }
 
-      if (Math.abs(meta.releaseYear - current.releaseYear) <= 2) {
+      if (Math.abs(other.data.releaseYear - entry.data.releaseYear) <= 2) {
         score += 2;
-        reasons.push("Similar release year (+2)");
+        reasons.push('Similar release year (+2)');
       }
 
-      return { doc, score, reasons };
+      return { entry: other, score, reasons } satisfies SimilarController;
     })
     .filter((item) => item.score > 0)
     .sort((a, b) => b.score - a.score)

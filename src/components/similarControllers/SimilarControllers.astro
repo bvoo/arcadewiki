@@ -1,0 +1,75 @@
+---
+import { SimilarControllersReasons } from '@/components/similarControllers/SimilarControllersReasons';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { USD } from '@/lib/format';
+import { type SimilarController } from '@/lib/similarControllers';
+import { getButtonTypeBadge } from '@/lib/utils';
+
+type Props = {
+  controllers: SimilarController[];
+};
+
+const { controllers } = Astro.props;
+---
+
+<div>
+  <h2 class="mb-4 font-bold text-xl">Similar Controllers</h2>
+  <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {
+      controllers.map(({ entry: doc, reasons }) => {
+        const { data } = doc;
+        const { label: buttonLabel, variant: buttonVariant } = getButtonTypeBadge(data.buttonType);
+
+        return (
+          <a href={`/controllers/${data.companySlug}/${data.controllerSlug}`} class="block">
+            <Card className="h-full gap-2 py-4 transition-colors hover:border-primary/50">
+              <CardHeader className="px-4">
+                <div class="flex items-start justify-between">
+                  <div class="mr-4 flex flex-1 items-start justify-between gap-2">
+                    <div>
+                      <CardTitle className="text-base">{data.name}</CardTitle>
+                      <p class="text-muted-foreground text-sm">{data.maker}</p>
+                    </div>
+                    <div class="flex gap-2">
+                      {buttonLabel && (
+                        <Badge variant={buttonVariant} className="font-mono text-xs">
+                          {buttonLabel}
+                        </Badge>
+                      )}
+                      {data.currentlySold && (
+                        <Badge variant="outline" className="text-xs">
+                          Available
+                        </Badge>
+                      )}
+                    </div>
+                  </div>
+
+                  <SimilarControllersReasons client:idle reasons={reasons} />
+                </div>
+              </CardHeader>
+
+              <CardContent className="space-y-4 px-4">
+                <div class="flex items-center justify-between gap-2" />
+
+                {(data.priceUSD || data.dimensionsMm) && (
+                  <div class="flex items-end justify-between gap-2 text-sm">
+                    {data.priceUSD && <p class="font-mono text-lg">{USD.format(data.priceUSD)}</p>}
+                    <div class="flex flex-wrap justify-end gap-4">
+                      {data.weightGrams && <p class="font-mono text-muted-foreground text-xs">{data.weightGrams}g</p>}
+                      {data.dimensionsMm && (
+                        <p class="font-mono text-muted-foreground text-xs">
+                          {data.dimensionsMm.width} × {data.dimensionsMm.depth} × {data.dimensionsMm.height} mm
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </a>
+        );
+      })
+    }
+  </div>
+</div>

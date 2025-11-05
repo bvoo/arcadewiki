@@ -1,0 +1,24 @@
+---
+import { BookmarkedControllers } from '@/components/BookmarkedControllers';
+import { ControllerFilter } from '@/components/ControllerFilter';
+import { ControllersTable } from '@/components/ControllersTable';
+import Layout from '@/layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const collection = await getCollection('controllers');
+const controllers = collection.map((entry) => entry.data);
+---
+
+<Layout editPage="src/routes/index.tsx">
+  <div class="flex grow flex-col p-6">
+    <div class="mb-4 flex gap-4">
+      <ControllerFilter client:load />
+    </div>
+
+    <BookmarkedControllers client:load controllers={controllers} />
+
+    <div class="h-4"></div>
+
+    <ControllersTable client:load controllers={controllers} />
+  </div>
+</Layout>

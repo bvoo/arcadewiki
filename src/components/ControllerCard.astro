@@ -1,0 +1,94 @@
+---
+import LinkButton from '@/components/LinkButton';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { type ControllerData, getButtonTypeBadge } from '@/lib/utils';
+import { USD } from '@/lib/format';
+import { ArrowRightIcon } from 'lucide-react';
+
+type Props = { data: ControllerData };
+
+const { data } = Astro.props;
+const {
+  name,
+  releaseYear,
+  buttonType,
+  weightGrams,
+  dimensionsMm,
+  priceUSD,
+  currentlySold,
+  companySlug,
+  controllerSlug,
+} = data;
+
+const { label: buttonLabel, variant: buttonVariant } = getButtonTypeBadge(buttonType);
+---
+
+<Card className="group py-4 transition-colors hover:border-primary/50">
+  <CardHeader>
+    <CardTitle className="text-lg transition-colors group-hover:text-primary">{name}</CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-2 text-sm">
+    <div class="flex items-center justify-between">
+      <span class="text-muted-foreground">Availability</span>
+      <Badge variant={currentlySold ? 'default' : 'secondary'} className="font-mono">
+        {currentlySold ? 'In Stock' : 'Not Sold'}
+      </Badge>
+    </div>
+
+    <div class="flex items-center justify-between">
+      <span class="text-muted-foreground">Button Type</span>
+      {
+        buttonLabel ? (
+          <Badge variant={buttonVariant} className="font-bold font-mono">
+            {buttonLabel}
+          </Badge>
+        ) : null
+      }
+    </div>
+
+    {
+      priceUSD && (
+        <div class="flex items-center justify-between">
+          <span class="text-muted-foreground">Price</span>
+          <span class="font-mono">{USD.format(priceUSD)}</span>
+        </div>
+      )
+    }
+
+    <div class="flex items-center justify-between">
+      <span class="text-muted-foreground">Released</span>
+      <span class="font-mono">{releaseYear}</span>
+    </div>
+
+    {
+      dimensionsMm && (
+        <div class="flex items-center justify-between">
+          <span class="text-muted-foreground">Dimensions</span>
+          <span class="text-right font-mono">
+            {dimensionsMm.width} × {dimensionsMm.depth} × {dimensionsMm.height}
+            <span class="ml-1 text-muted-foreground text-xs">mm</span>
+          </span>
+        </div>
+      )
+    }
+
+    {
+      weightGrams && (
+        <div class="flex items-center justify-between">
+          <span class="text-muted-foreground">Weight</span>
+          <span class="text-right font-mono">
+            {weightGrams}
+            <span class="ml-1 text-muted-foreground text-xs">g</span>
+          </span>
+        </div>
+      )
+    }
+
+    <LinkButton href={`/controllers/${companySlug}/${controllerSlug}`} variant="ghost" className="w-full">
+      View Details
+      <ArrowRightIcon className="ml-2 size-4" />
+    </LinkButton>
+  </CardContent>
+</Card>

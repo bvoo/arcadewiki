@@ -1,0 +1,70 @@
+---
+import BackToListButton from '@/components/BackToListButton.astro';
+import ControllerCard from '@/components/ControllerCard.astro';
+import Layout from '@/layouts/Layout.astro';
+import { USD } from '@/lib/format';
+import { baseUrl, type ControllerData } from '@/lib/utils';
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+
+export const getStaticPaths = (async () => {
+  const controllers = await getCollection('controllers');
+
+  const companies = new Map<string, { controllers: ControllerData[]; name: string }>();
+
+  for (const entry of controllers) {
+    const companySlug = entry.data.companySlug;
+
+    const existing = companies.get(companySlug) || { controllers: [], name: entry.data.maker };
+    existing.controllers.push(entry.data);
+    companies.set(companySlug, existing);
+  }
+
+  return Array.from(companies.entries()).map(([company, props]) => ({
+    params: { company },
+    props,
+  }));
+}) satisfies GetStaticPaths;
+
+const { company } = Astro.params;
+const { controllers, name: makerName } = Astro.props;
+
+const title = `${makerName} Controllers | arcade.wiki`;
+const description = `Browse all ${controllers.length} controllers from ${makerName}. Compare specs, prices, and features.`;
+const url = `${baseUrl}/makers/${company}`;
+
+const keywords = [makerName, 'arcade controllers', 'fightstick', company];
+
+const sortedControllers = [...controllers].sort((a, b) => b.releaseYear - a.releaseYear);
+
+const currentlySoldCount = controllers.filter((c) => c.currentlySold).length;
+const avgPrice =
+  controllers.filter((c) => c.priceUSD).reduce((sum, c) => sum + (c.priceUSD || 0), 0) /
+  controllers.filter((c) => c.priceUSD).length;
+---
+
+<Layout
+  title={title}
+  description={description}
+  url={url}
+  keywords={keywords}
+  breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Makers', href: '/makers' }, { label: makerName }]}
+>
+  <meta slot="head" name="twitter:card" content="summary" />
+  <BackToListButton slot="header-extra" />
+
+  <div class="mx-auto max-w-6xl p-6 w-full">
+    <div class="mb-8">
+      <h1 class="mb-2 font-bold text-3xl">{makerName}</h1>
+      <p class="mb-4 text-muted-foreground">
+        {sortedControllers.length} controller{sortedControllers.length !== 1 ? 's' : ''}
+        {currentlySoldCount > 0 && <> - {currentlySoldCount} currently available</>}
+        {avgPrice && <> - Avg price: {USD.format(avgPrice)}</>}
+      </p>
+    </div>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {sortedControllers.map((data) => <ControllerCard data={data} />)}
+    </div>
+  </div>
+</Layout>

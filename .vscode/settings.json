@@ -1,12 +1,9 @@
 {
-  "files.watcherExclude": {
-    "**/routeTree.gen.ts": true
+  "files.associations": {
+    "*.css": "tailwindcss"
   },
-  "search.exclude": {
-    "**/routeTree.gen.ts": true
-  },
-  "files.readonlyInclude": {
-    "**/routeTree.gen.ts": true
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[javascript]": {
     "editor.defaultFormatter": "biomejs.biome"
@@ -27,6 +24,9 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "[css]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[tailwindcss]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
   "editor.codeActionsOnSave": {

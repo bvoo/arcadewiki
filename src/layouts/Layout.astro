@@ -1,0 +1,118 @@
+---
+import type { BreadcrumbItem } from '@/components/Breadcrumbs.astro';
+import EditOnGitHub from '@/components/EditOnGitHub.astro';
+import Separator from '@/components/Separator.astro';
+import SiteHeader from '@/components/SiteHeader.astro';
+import { baseUrl } from '@/lib/utils';
+import '@/styles/global.css';
+
+const DEFAULT_TITLE = 'Arcade Controller Database - arcade.wiki';
+const DEFAULT_DESCRIPTION =
+  'Browse and compare arcade controllers and fightsticks. Find detailed specs, reviews, and prices for all major controllers.';
+const DEFAULT_URL = baseUrl;
+const DEFAULT_KEYWORDS = [
+  'arcade controller',
+  'arcade stick',
+  'fighting stick',
+  'sanwa',
+  'hori',
+  'qanba',
+  'madcatz',
+  'fightstick',
+  'gaming controller',
+  'hitbox',
+];
+
+type Props = {
+  title?: string;
+  description?: string;
+  url?: string;
+
+  keywords?: string[];
+  type?: 'product' | 'website';
+
+  editPage?: string;
+  breadcrumbs?: BreadcrumbItem[];
+  ldJson?: Record<string, unknown>;
+};
+
+const title = Astro.props.title ?? DEFAULT_TITLE;
+const description = Astro.props.description ?? DEFAULT_DESCRIPTION;
+const url = Astro.props.url ?? DEFAULT_URL;
+const keywords = (Astro.props.keywords ?? DEFAULT_KEYWORDS).join(', ');
+const type = Astro.props.type ?? 'website';
+
+const { editPage, breadcrumbs, ldJson } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+
+    <title>{title}</title>
+    <meta property="og:site_name" content="arcade.wiki" />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+
+    {/* og */}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content={type} />
+
+    {/* twitter */}
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:url" content={url} />
+
+    <slot name="head" />
+
+    <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={url} />
+
+    {ldJson && <script type="application/ld+json" is:inline set:html={JSON.stringify(ldJson)} />}
+
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-EM57W05E0Z"></script>
+    <script>
+      declare global {
+        interface Window {
+          dataLayer: any[];
+        }
+      }
+
+      window.dataLayer ??= [];
+
+      const gtag: (...args: any[]) => void = function () {
+        window.dataLayer.push(arguments);
+      };
+
+      gtag('js', new Date());
+      gtag('config', 'G-EM57W05E0Z');
+    </script>
+  </head>
+
+  <body>
+    <SiteHeader breadcrumbs={breadcrumbs}>
+      <slot name="header-extra" />
+    </SiteHeader>
+
+    <main>
+      <slot />
+    </main>
+
+    {
+      editPage && (
+        <>
+          <Separator />
+          <footer class="p-6">
+            <EditOnGitHub filePath={editPage} />
+          </footer>
+        </>
+      )
+    }
+  </body>
+</html>

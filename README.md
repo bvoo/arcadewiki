@@ -4,8 +4,8 @@ Thanks for helping improve arcade.wiki! This guide explains how to add and maint
 
 ## Project Structure
 
-- __Content root__: `src/content/`
-- __Per-controller path__: `src/content/{company}/{controller}/index.mdx`
+- **Content root**: `src/content/`
+- **Per-controller path**: `src/content/{company}/{controller}/index.mdx`
   - Example: `src/content/orca-analog-controllers/the-orca/index.mdx`
 
 ## MDX Frontmatter Schema
@@ -14,12 +14,10 @@ Each controller page uses YAML frontmatter that maps to `ControllerFrontmatter` 
 
 Required/optional fields:
 
+<!-- prettier-ignore -->
 ```yaml
-id: the-orca                    # string; defaults to folder name
 name: The Orca                  # string; display name
 maker: Orca Analog Controllers  # string; human-friendly maker
-company: orca-analog-controllers# string; company slug (folder name)
-controller: the-orca            # string; controller slug (folder name)
 buttonType: analog              # string; "digital" or "analog"
 priceUSD: 249.0                 # number; omit if unknown
 currentlySold: true             # boolean
@@ -75,11 +73,11 @@ Write your description here. You can use standard Markdown: headings, paragraphs
 
 ## Content Rules of Thumb
 
-- __Slugs__ (`company`, `controller`) must match their directory names.
-- __Numbers__: use plain numbers (no quotes). Prices are in USD.
-- __Omit unknowns__: leave fields out instead of guessing.
-- __External links__: set a single `link` to the official product page if available.
-- __Images__: For now, store public images next to their respective `index.mdx` and link by relative path (e.g., `./controller.webp`).
+- **Slugs** (`company`, `controller`) must match their directory names.
+- **Numbers**: use plain numbers (no quotes). Prices are in USD.
+- **Omit unknowns**: leave fields out instead of guessing.
+- **External links**: set a single `link` to the official product page if available.
+- **Images**: For now, store public images next to their respective `index.mdx` and link by relative path (e.g., `./controller.webp`).
 
 ## Local Development
 

@@ -1,32 +1,64 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+  "$schema": "node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": false,
     "clientKind": "git",
-    "useIgnoreFile": false
+    "useIgnoreFile": true
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": ["src/routeTree.gen.ts"],
-    "include": ["src/*", ".vscode/*", "index.html", "vite.config.js"]
+    "includes": [
+      "**/*.mjs",
+      "**/*.ts",
+      "**/*.tsx",
+      "**/*.css",
+      "**/*.json",
+      "**/*.jsonc",
+      "!src/routeTree.gen.ts",
+      "!**/.astro"
+    ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
-    "indentWidth": 2
-  },
-  "organizeImports": {
-    "enabled": true
+    "indentWidth": 2,
+    "lineWidth": 120
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "nursery": {
+        "recommended": true,
+        "useSortedClasses": "warn"
+      },
+      "a11y": {
+        "noStaticElementInteractions": "off",
+        "useSemanticElements": "off"
+      },
+      "style": {
+        "useConst": "off",
+        "useImportType": "off"
+      },
+      "correctness": {
+        "noUnusedVariables": "off",
+        "noUnusedImports": "off"
+      }
+    }
+  },
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "quoteStyle": "single"
     }
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double"
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "jsxQuoteStyle": "single"
     }
   }
 }
