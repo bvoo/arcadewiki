@@ -8,5 +8,5 @@ Disallow:
 Sitemap: ${baseUrl}/sitemap.xml
 `;
 
-  return new Response(robots, { headers: { 'Content-Type': 'plaintext' } });
+  return new Response(robots, { headers: { 'Content-Type': 'text/plain' } });
 }
