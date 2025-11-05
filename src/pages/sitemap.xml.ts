@@ -43,8 +43,6 @@ export async function GET() {
 
   const pagesDir = join(srcDir.toString().replace(/^file:\/\/\//, ''), 'pages');
 
-  console.info('index', join(pagesDir, 'index.astro'));
-
   const entries: { loc: string; lastmod: string }[] = [
     { loc: '/', lastmod: getLastmod(join(pagesDir, 'index.astro')) },
     { loc: '/makers', lastmod: getLastmod(join(pagesDir, 'makers/index.astro')) },
