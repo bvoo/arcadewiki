@@ -13,7 +13,7 @@ export interface ControllerTableViewProps<TData> {
 export function ControllerTableView<TData>({ table, hidePagination = false }: ControllerTableViewProps<TData>) {
   return (
     <>
-      <Card className='overflow-hidden border-border'>
+      <Card className='overflow-hidden border-border py-0'>
         <CardContent className='p-0'>
           <Table>
             <TableHeader className='text-secondary-foreground'>
