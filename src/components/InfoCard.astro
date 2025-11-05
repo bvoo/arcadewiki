@@ -4,9 +4,10 @@ import LinkButton from '@/components/LinkButton';
 import { SwitchTypeDropdown } from '@/components/SwitchTypeDropdown';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import type { ControllerData } from '@/content.config';
 import { USD } from '@/lib/format';
-import { cn, getButtonTypeBadge, type ControllerData } from '@/lib/utils';
-import { Link2Icon, Link2OffIcon, LinkIcon } from 'lucide-react';
+import { cn, getButtonTypeBadge } from '@/lib/utils';
+import { LinkIcon } from 'lucide-react';
 
 type Props = {
   data: ControllerData;
@@ -65,7 +66,8 @@ const { data, class: className, ...rest } = Astro.props;
         {
           data.weightGrams ? (
             <span class="font-mono tabular-nums">
-              {data.weightGrams}<span class="text-muted-foreground text-xs">g</span>
+              {data.weightGrams}
+              <span class="text-muted-foreground text-xs">g</span>
             </span>
           ) : (
             <span class="text-muted-foreground">—</span>

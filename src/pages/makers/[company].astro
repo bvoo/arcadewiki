@@ -1,9 +1,10 @@
 ---
 import BackToListButton from '@/components/BackToListButton.astro';
 import ControllerCard from '@/components/ControllerCard.astro';
+import type { ControllerData } from '@/content.config';
 import Layout from '@/layouts/Layout.astro';
 import { USD } from '@/lib/format';
-import { baseUrl, type ControllerData } from '@/lib/utils';
+import { baseUrl } from '@/lib/utils';
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 

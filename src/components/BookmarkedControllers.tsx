@@ -1,7 +1,7 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { BookmarkIcon } from 'lucide-react';
 import { useMemo } from 'react';
-import type { ControllerData } from '@/lib/utils';
+import type { ControllerData } from '@/content.config';
 import { useLazyStore } from '@/stores';
 import { bookmarkStore, removeBookmark } from '@/stores/bookmarkStore';
 import { ControllersTable } from './ControllersTable';

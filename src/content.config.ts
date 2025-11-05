@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content';
+import { type CollectionEntry, defineCollection, z } from 'astro:content';
 import { glob, type ParseDataOptions } from 'astro/loaders';
 
 type Preprocess = <TData extends Record<string, unknown>>(
@@ -66,3 +66,6 @@ const controllers = defineCollection({
 });
 
 export const collections = { controllers };
+
+export type ControllerEntry = CollectionEntry<'controllers'>;
+export type ControllerData = ControllerEntry['data'];

@@ -3,8 +3,8 @@ import { Resvg } from '@resvg/resvg-js';
 import type { APIRoute, GetStaticPaths, InferGetStaticParamsType, InferGetStaticPropsType } from 'astro';
 import React from 'react';
 import satori, { type SatoriOptions } from 'satori';
+import type { ControllerData } from '@/content.config';
 import { USD } from '@/lib/format';
-import type { ControllerData } from '@/lib/utils';
 
 function createElement(data: ControllerData) {
   return React.createElement(

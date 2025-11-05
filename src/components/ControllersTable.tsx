@@ -13,9 +13,10 @@ import {
 } from '@tanstack/react-table';
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
+import type { ControllerData } from '@/content.config';
 import { USD } from '@/lib/format';
 import { globalFilter } from '@/stores/filterStore';
-import { type ControllerData, getButtonTypeBadge } from '../lib/utils';
+import { getButtonTypeBadge } from '../lib/utils';
 import { ControllerTableView } from './ControllerTableView';
 import { SwitchTypeDropdown } from './SwitchTypeDropdown';
 
