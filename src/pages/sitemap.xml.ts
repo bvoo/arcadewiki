@@ -56,8 +56,10 @@ export async function GET() {
     entries.push(controller);
   }
 
+  const trimmedBaseUrl = baseUrl.replace(/\/+$/, '').trim();
+
   const urls = entries.map((entry) => {
-    const loc = `${baseUrl}${entry.loc}`.replace(/\/+/, '/');
+    const loc = `${trimmedBaseUrl}${entry.loc}`;
     return `<url><loc>${loc}</loc><lastmod>${entry.lastmod}</lastmod></url>`;
   });
 
