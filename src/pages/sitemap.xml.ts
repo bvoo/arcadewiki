@@ -57,7 +57,7 @@ export async function GET() {
   }
 
   const urls = entries.map((entry) => {
-    const loc = `${baseUrl}${entry.loc}`.replace(/\/+/, '/');
+    const loc = `${baseUrl}${entry.loc}`.replace(/([^:]\/)\/+/g, '$1');
     return `<url><loc>${loc}</loc><lastmod>${entry.lastmod}</lastmod></url>`;
   });
 
