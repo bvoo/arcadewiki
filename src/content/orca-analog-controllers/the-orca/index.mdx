@@ -17,13 +17,126 @@ dimensionsMm:
   height: 39
 ---
 
-### Overview
+## Overview
 
-![orca](@/content/orca-analog-controllers/the-orca/orca.jpg)
+The Orca is a leverless analog controller released in December 2024 by Orca Analog Controllers. The retail price is $249.00 USD. The controller remains in production as of 2024.
 
-demo
+The Orca is an analog stickless controller designed specifically for Super Smash Bros. and other platform fighters, featuring Hall Effect analog switches for directional inputs. This allows for true analog control without a traditional joystick.
 
-### Features
+## Development
 
-- really cool
-- awesome
+### Release History
+
+The Orca was released on December 20, 2024 by Orca Analog Controllers. The controller was designed as an analog alternative to existing digital leverless controllers.
+
+The unit measures 331mm in width, 185mm in depth, and 39mm in height. Weight is approximately 1000 grams. The controller is constructed with an aluminum switch plate and acrylic case.
+
+## Technical Specifications
+
+### Physical Characteristics
+
+The Orca measures 331mm (13.03 inches) in width, 185mm (7.28 inches) in depth, and 39mm (1.54 inches) in height. Weight is approximately 1000 grams.
+
+### Materials
+
+**Case**: Acrylic construction.
+
+**Switch Plate**: Aluminum. Provides structural rigidity and mounting for switches.
+
+**Buttons**: Mixture of switch types including analog Hall Effect switches and digital mechanical switches.
+
+### Switch Configuration
+
+The Orca uses a hybrid switch configuration with both analog and digital switches.
+
+**Analog Directional Switches**: Everglide Rice Pudding Hall Effect switches
+
+**Alternative Analog Switches**: Lekker Linear45 V2
+
+**Digital Switches**: Kailh Speed Silver
+
+Used for action buttons and secondary inputs.
+
+**Low-Profile Secondary Switches**: Kailh Choc V2
+
+Used for additional function buttons.
+
+### Analog Features
+
+The Orca implements several analog-specific features:
+
+**Two-Stage Spring System**: Physical notch emulation for directional inputs.
+
+**Variable-Press Analog Switches**: Directional inputs respond to pressure levels for tilt control.
+
+**True Neutral Additive SOCD**: Simultaneous Opposing Cardinal Direction cleaning optimized for analog inputs.
+
+**One-Button Tilt Angles**: Dedicated buttons for specific tilt attack angles.
+
+**Two-Button Wavedash Angles**: Button combinations for precise wavedash angles.
+
+### Processor
+
+**Microcontroller**: RP2040. The dual-core ARM Cortex-M0+ processor handles USB communication, analog input processing, and protocol translation.
+
+### USB Interface
+
+**Port**: USB-C.
+
+**Cables Included**: USB-C to GameCube adapter cable.
+
+**Compatibility**: Native USB adapter mode. Native XInput mode via GP2040-CE firmware. GameCube, PC, Switch via adapter.
+
+### Software
+
+The Orca uses its own firmware, with custom extensions based on the GP2040-CE for XInput support.
+
+**Web-Based Remapper and Configurator**: Browser-based configuration tool for button remapping and analog settings.
+
+## Retail Package
+
+The Orca includes the Orca Analog controller, USB-C to GameCube adapter cable, and a 2-year warranty.
+
+## Version History
+
+**December 20, 2024 - Initial Release**
+
+- Price: $249.00 USD
+- Processor: RP2040
+- Analog switches: Everglide Rice Pudding Hall Effect (or Lekker Linear45 V2)
+- Digital switches: Kailh Speed Silver
+- Low-profile switches: Kailh Choc V2
+- Case: Acrylic with aluminum switch plate
+- Dimensions: 331mm x 185mm x 39mm
+- Weight: 1000g
+- Firmware: GP2040-CE with custom analog extensions
+
+**2024-Present - Production**
+
+- Current sale price: $219.00 USD (discounted from $249.00)
+- No hardware revisions documented (please rienne :D)
+
+## Comparison to Digital Controllers
+
+The Orca differs from digital leverless controllers (such as Frame1, B0XX, and Smash Box) in its use of analog Hall Effect switches for directional inputs. While digital controllers use on/off button presses for directions, the Orca's Hall Effect switches allow for variable input levels similar to a traditional analog stick.
+
+This enables:
+
+- True tilt attacks based on input pressure
+- Walk speed variations
+- Precise angle control for recovery moves
+
+However, this also means the controller requires different input techniques compared to fully digital leverless controllers.
+
+## Community Resources
+
+Third-Party Reviews:
+
+- [The Arcade Stick - Orca Analog Overview](https://thearcadestick.com/orca-analog/)
+
+## Official Resources
+
+- [Orca Analog Controller Product Page](https://theorca.gg/product/orca-analog-controller/)
+- [Orca Official Website](https://theorca.gg)
+- [GP2040-CE Firmware Documentation](https://gp2040-ce.info/)
+- [Orca Controller Documentation](https://orca-controller.readthedocs.io/en/dev/)
