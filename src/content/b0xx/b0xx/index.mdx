@@ -8,9 +8,204 @@ currentlySold: false
 releaseYear: 2023
 switchType:
   - Sanwa OBSF-24
-weightGrams: 900
+weightGrams: 1724
 dimensionsMm:
-  width: 350
-  depth: 150
-  height: 40
+  width: 406
+  depth: 203
+  height: 35
 ---
+
+## Overview
+
+The B0XX is a leverless controller released in Summer 2021 by 20XX.
+
+The B0XX was developed over a five-year period from 2016 to 2021 by Aziz "Hax$" Al-Yami with engineering and programming by Kyle "Simple" McDowell and production by Stephen "Streamlord" Kasmir.
+
+## Development
+
+### Origins and Design History
+
+The B0XX project began in 2016 when Hax$ (Aziz Al-Yami) sought to create an ergonomic alternative to the Nintendo GameCube controller. Hax$ had previously assisted in the development of the Smash Box by Hit Box Arcade but parted ways in January 2017 to pursue an independent design with improved button placement and tournament balancing.
+
+Development was conducted by Rutgers University engineering students Arhum Siddiqi and James Taylor in collaboration with Hax$. The team went through multiple prototype iterations over four years, with constant redesign based on competitive testing and feedback from local tournaments.
+
+The [B0XX Manifesto](https://drive.google.com/file/d/1ZQCsKs3H2VCXWhVfHMLbt7Gs4OG6JB8t/view) (published 2018) outlined the design philosophy: the controller must coexist with the GameCube controller competitively rather than surpass it, requiring deliberate limitations ("nerfs") on certain inputs to maintain tournament legality.
+
+### Release
+
+The B0XX officially launched in Summer 2021 after five years of development.
+
+## Technical Specifications
+
+### Materials
+
+**Case**: Steel with acrylic top panel.
+
+**Buttons**: Twenty Sanwa OBSF-24 arcade buttons (24mm diameter).
+
+**Stock Switch**: Sanwa SW-68 microswitch
+
+**Mounting**: The 24mm snap-in buttons mount in control panels up to 3.7mm thick using 24mm mounting holes.
+
+### Button Layout
+
+The B0XX uses a 20-button layout optimized for Super Smash Bros. Melee:
+
+- Directional buttons 
+- Action buttons
+- Modifier buttons (X and Y modifiers for tilt attacks)
+- Function buttons (Start, Z, etc.)
+
+### USB Interface
+
+**Port**: USB-C.
+
+**Cables Included**:
+
+- USB-C to USB-A cable (for PC/Switch)
+- USB-C to GameCube cable (for GameCube/Wii/N64)
+
+**Compatibility**: Native PC support (no adapter required), GameCube, Wii, N64 (with optional cable), and Switch via adapter.
+
+## Hardware Revisions
+
+The B0XX has undergone four hardware board revisions (R1, R2, R3, R4) since launch.
+
+### R1 (Release 1) - 2021
+
+The initial production run. Uses an Arduino microcontroller.
+
+**Firmware compatibility**:
+
+- v1.00: Shipped with orders below 1270
+- v2.00: Shipped with orders 1271-1303
+- v2.3: R1-only firmware with Lightshield support and polling rate increased from 125Hz to 500Hz
+- Maximum supported: v3.4
+
+**Limitations**: R1 boards do not support XInput or Native Switch modes even with later firmware. D-Input is used instead.
+
+### R2 and R3 - 2021-2022
+
+Minor PCB revisions improving reliability and manufacturing consistency. R2 and R3 boards are functionally similar and share firmware compatibility. The R3 also uses an Arduino microcontroller.
+
+**Firmware compatibility**:
+
+- v1.00 through v3.4
+- v4.1 (with R4 compatibility layer)
+
+### R4 - 2022-2023
+
+Major hardware revision introducing significant PCB changes and new firmware architecture, thanks to the use of an RP2040 microcontroller.
+
+**Key changes**:
+
+- New PCB design with different component layout
+- USB mass storage-based firmware updates (hold Start + C-Down while plugging in)
+- Improved native USB support
+
+**Firmware compatibility**:
+
+- v4.1 and later versions
+- Native USB patches
+- FGC/Brook mode support with A button doubling functionality
+
+### Firmware Version History
+
+**v1.00 (Launch)** - Initial firmware shipped with release units.
+
+**v2.00** - Shipped with orders 1271-1303.
+
+**v2.11-v2.12** - SOCD reactivation improvements for Melee/Ultimate and Keyboard/Rivals of Aether modes.
+
+**v2.3 (R1 only)** - Lightshield support added. Polling rate increased from 125Hz to 500Hz.
+
+**v3.4 (R1/2/3)** - Project M mode now compatible with Nickelodeon All-Star Brawl.
+
+**v4.1 (R1/2/3/4)** - Major update with Native USB support. FGC/Brook mode improvements. R1/2/3 require different installation method than R4.
+
+**Native USB Patches** - Ongoing patches for R4 boards improving USB compatibility and input handling.
+
+## DIY Construction
+
+### Open Source Resources
+
+While the official B0XX is a manufactured product, community DIY alternatives exist.
+
+**DIYB0XX Project** ([GitHub](github.com/Crane1195/DIYB0XX)):
+Released January 2, 2019. GPL-3.0 license. A Community-developed method for building B0XX-style controllers.
+
+**DIYB0XX Versions**:
+
+- Version 1: WoodB0XX (wooden case, laser-cut acrylic panel)
+- Version 2: AluminumB0XX (smaller aluminum case)
+- Version 3: LaserCutB0XX (laser-cut wooden case with new GCCPCB)
+- MiniB0XX: 3D printable case variant
+
+**Crane's Lab**: Documentation and build logs available at [craneslab.xyz](https://www.craneslab.xyz/projects/b).
+
+### DIY Components
+
+**Electronic**:
+Arduino or compatible microcontroller (varies by DIYB0XX version). PCB designs available in DIYB0XX repository. Sanwa OBSF-24 buttons or compatible alternatives.
+
+**Mechanical**:
+Wood, aluminum, or 3D printed case (depending on DIYB0XX version). Acrylic top panel. Sanwa SW-68 microswitches (for digital buttons).
+
+## Retail Package
+
+The B0XX Matte Edition ($229.99) includes the B0XX controller (pre-assembled), USB-C to USB-A cable, USB-C to GameCube cable, and B0XX faux leather sleeve.
+
+The Limited Edition ($279.99) includes the above plus numbered certification.
+
+### Optional Accessories
+
+Available separately from 20XX:
+
+- 20MX Kit (reduces actuation force required)
+- N64 cable (for native N64 support)
+- Replacement button sets
+- Carrying cases
+
+## Version History
+
+**2016-2020: Development**
+Prototype phase with multiple design iterations. Testing at local tournaments. Collaboration with Rutgers engineering students.
+
+**January 2017**: Hax$ parts ways with Hit Box Arcade to pursue independent B0XX development.
+
+**Summer 2021: Initial Release (R1)**
+
+- Price: $229.99 USD (Matte Edition)
+- Board: R1
+- Firmware: v1.00
+- Buttons: 20x Sanwa OBSF-24
+- Case: Steel with acrylic top
+
+**2021-2022: R2 and R3**
+Minor hardware revisions for manufacturing improvements. No user-facing changes.
+
+**2022-2023: R4 Release**
+Major PCB redesign with an RP2040 MCU and improved native USB support.
+
+**2025: Limited Release**
+Limited Edition numbered releases at $279.99, intended to honor Hax$'s legacy after his passing.
+
+## Community Resources
+
+DIY/Open Source:
+
+- [DIYB0XX GitHub](https://github.com/Crane1195/DIYB0XX) (GPL-3.0)
+- [Crane's Lab Project B](https://www.craneslab.xyz/projects/b)
+
+Third-Party:
+
+- [The Arcade Stick Review](https://thearcadestick.com/b0xx/)
+
+## Official Resources
+
+- [B0XX Official Website](https://www.b0xx.com)
+- [B0XX Product Page](https://b0xx.com/products/b0xx)
+- [DIYB0XX GitHub Repository](https://github.com/Crane1195/DIYB0XX)
+- [B0XX Firmware Updater](https://b0xx.com/pages/updater)
+- [B0XX v3 Instruction Manual](https://drive.google.com/file/d/1InBmEJkWi3E5ReAUIGM9loHygaoNODcf/view)
+- [B0XX Manifesto](https://drive.google.com/file/d/1ZQCsKs3H2VCXWhVfHMLbt7Gs4OG6JB8t/view)
