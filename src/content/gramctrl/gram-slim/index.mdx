@@ -13,19 +13,148 @@ dimensionsMm:
   width: 315
   depth: 175
   height: 10
-link: https://gramctrl.com/products/gram-slim
+link: https://web.archive.org/web/20251009035208/https://gramctrl.com/products/gram-slim
 ---
 
-### Overview
+## Overview
 
-### Specs
+The GRAM Slim is a leverless controller developed by GRAM Digital Controllers and released in 2023. It was designed as a low-profile alternative to existing leverless controllers, with a chassis height of 10mm. The controller was discontinued in 2025, though design files remain available for DIY construction.
 
-- PBT 24mm Choc v1 buttons
-- Runs on Haybox firmware
-- Aluminum top and bottom panels
-- Silicone grip on the bottom
-- Injection-molded PBT frame
+## Development
 
-### Links
+### Open Source Release
 
-- [GRAM Slim GitHub Repo (open source)](https://github.com/GrammyMoney/GRAM-SLIM)
+On May 24, 2023, GRAM Digital Controllers published the complete design files for the GRAM Slim on GitHub under the GPL-3.0 license. The repository includes:
+
+- STL files for frame and button cap printing
+- Fabrication files for aluminum top and bottom panels
+- PCB Gerber files
+- Assembly documentation
+- Template DXF files for panel customization
+
+## Technical Specifications
+
+### Physical Characteristics
+
+The chassis height of 10mm was achieved through a "floating" switch design, where the switches use the top panel as a mounting plate.
+
+### Materials
+
+**Frame**: Injection-molded polybutylene terephthalate (PBT)
+
+**Top Panel**: Depending on variant:
+
+- Aluminum PCB
+- Powder-coated aluminum
+- Powder-coated aluminum with UV Printing (Genesis X2)
+
+**Bottom Panel**: Depending on variant:
+
+- Aluminum PCB
+- Powder-coated aluminum
+
+**Button Caps**: Injection-molded PBT, 24mm diameter
+
+### Switch Configuration
+
+The controller contains 21 mechanical switch positions, all using Kailh Choc V1 switches mounted in PG1350 hot-swap sockets.
+
+**Stock Switch**: Kailh Choc V1 Red Pro
+
+- Actuation force: 35g
+- Switch type: Linear, low-profile
+- Hot-swap socket: PG1350
+
+## DIY Construction
+
+### Bill of Materials
+
+**Electronic Components**:
+
+- 21× Kailh Choc V1 switches (Red, Red Pro, or Whites)
+- 21× PG1350 hot-swap sockets
+- GRAM Slim PCB, designed by [Quark](https://x.com/quark_works)
+
+**Mechanical Components**:
+
+- GRAM 24mm Choc Keycap Buttons (3D print from STL files or purchase)
+- GRAM Slim Frame (3D print or purchase)
+- Top and Bottom panels (order from fabrication service)
+- 7× M5×0.8 8mm Low-Profile Socket Head Screws
+- 7× M5×0.8 Round-Base Weld Nuts
+
+**Optional**:
+
+- USB-C to GCC cable
+- USB-C to USB-A cable
+
+### Recommended Print Materials
+
+**Frame**:
+
+- LEDO 6060 resin
+- Black resin
+- PA12-HP Nylon
+
+**Button Caps**:
+
+- LEDO 6060 resin
+- 8001 Transparent resin
+
+### Assembly Process
+
+1. Frame preparation (print or purchase)
+2. Insert PG1350 sockets into PCB
+3. Press switches into sockets
+4. Attach keycaps to switch stems
+5. Secure panels using M5 screws and weld nuts
+6. Flash firmware via USB
+
+No soldering is required for switch installation.
+
+## Retail Package
+
+The controller was sold with:
+
+- GRAM Slim controller (pre-assembled)
+- GRAM neoprene soft case
+- Braided USB-C to GCC cable (1.8m)
+- Braided USB-C to USB-A cable (1.8m)
+
+### Optional Accessories
+
+- Replacement button sets
+- Alternative switches (Kailh Choc V1 variants)
+- Printed aluminum top panels
+- Replacement frames
+- Hard-shell carrying cases
+
+## Version History
+
+- GRAM1 - 5 units made
+  - Firmware: Pico-Rectangle
+- GRAM-OF1 (formerly GRAMv2?) - 16 units made
+  - Firmware: Pico-Rectangle
+  ![SlimV2](@/content/gramctrl/gram-slim/slimv2.jpg)
+- GRAMv2 (rectangle corner release?)
+- GRAM Slim Smash v3
+  - Firmware: Haybox
+- GRAM Slim Smash v3.4
+  - Firmware: Haybox
+- GRAM Slim v4 - Screwless?
+  - Firmware: Haybox
+
+**Discontinued (2025)**
+
+- Production ceased
+
+## Community Resources
+
+- GRAMCTRL Discord: https://discord.com/invite/6TuHw2r2X4
+- Help Documentation: https://help.gramctrl.com/getting-started/gram-slim
+
+## Links
+
+- [GRAM Slim Product Page (Archived Oct 9th, 2025)](https://web.archive.org/web/20251009035208/https://gramctrl.com/products/gram-slim)
+- [GRAM Slim GitHub Repository](https://github.com/GRAMCTRL/GRAM-SLIM)
+- [GRAMCTRL Help Desk](https://help.gramctrl.com/)

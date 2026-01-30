@@ -3,6 +3,7 @@ dist/
 
 # generated types
 .astro/
+.nitro/
 
 # dependencies
 node_modules/
@@ -24,3 +25,5 @@ pnpm-debug.log*
 .idea/
 
 /public/og
+.output/
+.tanstack/
