@@ -15,8 +15,8 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import type { ControllerData } from '@/content.config';
 import { USD } from '@/lib/format';
-import { globalFilter } from '@/stores/filterStore';
-import { getButtonTypeBadge } from '../lib/utils';
+import { gameTypeFilter, globalFilter } from '@/stores/filterStore';
+import { getButtonTypeBadge, getGameTypeBadge } from '../lib/utils';
 import { ControllerTableView } from './ControllerTableView';
 import { SwitchTypeDropdown } from './SwitchTypeDropdown';
 
@@ -45,18 +45,24 @@ export function ControllersTable({
   hidePagination = false,
 }: ControllersTableProps) {
   const $globalFilter = useStore(globalFilter);
+  const $gameTypeFilter = useStore(gameTypeFilter);
 
   const [sorting, setSorting] = React.useState<SortingState>([{ id: 'releaseYear', desc: true }]);
 
+  const filteredRows = React.useMemo(() => {
+    if ($gameTypeFilter === 'all') return rows;
+    return rows.filter((r) => (r.gameType ?? 'multi') === $gameTypeFilter);
+  }, [rows, $gameTypeFilter]);
+
   const maxSwitchChars = React.useMemo(() => {
     let max = 0;
-    for (const r of rows) {
+    for (const r of filteredRows) {
       for (const s of r.switchType) {
         if (s && s.length > max) max = s.length;
       }
     }
     return Math.max(14, max + 6);
-  }, [rows]);
+  }, [filteredRows]);
 
   const columns = React.useMemo<ColumnDef<Row, unknown>[]>(
     () => [
@@ -101,6 +107,18 @@ export function ControllersTable({
             </Badge>
           ) : (
             ''
+          );
+        },
+      },
+      {
+        accessorKey: 'gameType',
+        header: 'Type',
+        cell: ({ row }) => {
+          const { label, variant } = getGameTypeBadge(row.original.gameType);
+          return (
+            <Badge variant={variant} className='font-medium'>
+              {label}
+            </Badge>
           );
         },
       },
@@ -173,7 +191,7 @@ export function ControllersTable({
   );
 
   const table = useReactTable<Row>({
-    data: rows,
+    data: filteredRows,
     columns,
     filterFns: { fuzzy: fuzzyFilter },
     state: { globalFilter: $globalFilter, sorting },

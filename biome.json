@@ -15,7 +15,11 @@
       "**/*.json",
       "**/*.jsonc",
       "!src/routeTree.gen.ts",
-      "!**/.astro"
+      "!**/.astro",
+      "!dist",
+      "!.output",
+      "!.nitro",
+      "!.tanstack"
     ]
   },
   "formatter": {

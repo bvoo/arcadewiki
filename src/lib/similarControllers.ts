@@ -22,6 +22,11 @@ export async function getSimilarControllers(
         reasons.push('Same maker (+10)');
       }
 
+      if (other.data.gameType === entry.data.gameType) {
+        score += 8;
+        reasons.push('Same type (+8)');
+      }
+
       if (other.data.buttonType === entry.data.buttonType) {
         score += 5;
         reasons.push('Same button type (+5)');

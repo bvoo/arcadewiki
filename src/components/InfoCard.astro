@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import type { ControllerData } from '@/content.config';
 import { USD } from '@/lib/format';
-import { cn, getButtonTypeBadge } from '@/lib/utils';
+import { cn, getButtonTypeBadge, getGameTypeBadge } from '@/lib/utils';
 import { LinkIcon } from 'lucide-react';
 
 type Props = {
@@ -42,6 +42,18 @@ const { data, class: className, ...rest } = Astro.props;
                 {label}
               </Badge>
             ) : null;
+          })()
+        }
+
+        <span class="text-muted-foreground">Type:</span>
+        {
+          (() => {
+            const { label, variant } = getGameTypeBadge(data.gameType);
+            return (
+              <Badge variant={variant} className="font-medium">
+                {label}
+              </Badge>
+            );
           })()
         }
 

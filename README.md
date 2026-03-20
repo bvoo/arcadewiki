@@ -19,6 +19,7 @@ Required/optional fields:
 name: The Orca                  # string; display name
 maker: Orca Analog Controllers  # string; human-friendly maker
 buttonType: analog              # string; "digital" or "analog"
+gameType: platform              # string; "traditional", "platform", or "multi" (default: traditional)
 priceUSD: 249.0                 # number; omit if unknown
 currentlySold: true             # boolean
 releaseYear: 2024               # number
@@ -33,6 +34,11 @@ dimensionsMm:                   # object; omit if unknown
 link: https://example.com       # optional external link
 ```
 
+`gameType` classifies the controller's target audience:
+- `traditional` (default) - traditional fighting games (Street Fighter, Tekken, Guilty Gear, etc.)
+- `platform` - platform fighters (Super Smash Bros., Rivals of Aether, etc.)
+- `multi` - genre-agnostic.
+
 After the frontmatter separator `---`, write normal Markdown/MDX for the page body (e.g., Overview, Features, Pros/Cons, etc.).
 
 ## Example MDX File
@@ -42,6 +48,7 @@ After the frontmatter separator `---`, write normal Markdown/MDX for the page bo
 name: The Orca
 maker: Orca Analog Controllers
 buttonType: analog
+gameType: platform
 priceUSD: 249.0
 currentlySold: true
 releaseYear: 2024

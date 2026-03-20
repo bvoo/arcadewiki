@@ -116,9 +116,16 @@ if (meta.dimensionsMm != null) {
   };
 }
 
-const keywords = [meta.name, meta.maker, 'arcade controller', 'arcade stick', meta.buttonType, 'fightstick'].filter(
-  (x) => x != null,
-);
+const keywords = [
+  meta.name,
+  meta.maker,
+  'leverless controller',
+  'arcade controller',
+  'arcade stick',
+  meta.buttonType,
+  'fightstick',
+  meta.gameType,
+].filter((x) => x != null);
 ---
 
 <Layout

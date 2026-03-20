@@ -38,10 +38,13 @@ const contentSchema = z.object({
   switchType: switchTypeSchema,
   weightGrams: z.coerce.number().int().positive().optional(),
   dimensionsMm: dimensionsSchema.optional(),
+  gameType: z.enum(['traditional', 'platform', 'multi']).default('traditional'),
 
   companySlug: z.string(),
   controllerSlug: z.string(),
 });
+
+export type GameType = z.infer<typeof contentSchema.shape.gameType>;
 
 const controllers = defineCollection({
   loader: globWithPreprocess({
