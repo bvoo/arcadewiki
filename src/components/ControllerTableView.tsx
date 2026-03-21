@@ -119,7 +119,7 @@ export function ControllerTableView<TData>({ table, hidePagination = false }: Co
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {[10, 20, 30, 40, 50].map((size) => (
+                {[20, 30, 40, 50, 100].map((size) => (
                   <SelectItem key={size} value={String(size)}>
                     Show {size}
                   </SelectItem>

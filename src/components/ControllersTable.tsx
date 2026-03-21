@@ -201,6 +201,7 @@ export function ControllersTable({
     getFilteredRowModel: getFilteredRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 20 } },
   });
 
   return <ControllerTableView table={table} hidePagination={hidePagination} />;
