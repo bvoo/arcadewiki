@@ -13,31 +13,19 @@ weightGrams: 725
 dimensionsMm:
   width: 315
   depth: 175
-  height: 10
+  height: 11
 link: https://web.archive.org/web/20251009035208/https://gramctrl.com/products/gram-slim
 ---
 
 ## Overview
 
-The GRAM Slim is a leverless controller developed by GRAM Digital Controllers and released in 2023. It was designed as a low-profile alternative to existing leverless controllers, with a chassis height of 10mm. The controller was discontinued in 2025, though design files remain available for DIY construction.
+The GRAM Slim was an ultra-thin open-source leverless that pushed low-profile construction further than most commercial peers.
 
-## Development
-
-### Open Source Release
-
-On May 24, 2023, GRAM Digital Controllers published the complete design files for the GRAM Slim on GitHub under the GPL-3.0 license. The repository includes:
-
-- STL files for frame and button cap printing
-- Fabrication files for aluminum top and bottom panels
-- PCB Gerber files
-- Assembly documentation
-- Template DXF files for panel customization
-
-## Technical Specifications
+## Hardware
 
 ### Physical Characteristics
 
-The chassis height of 10mm was achieved through a "floating" switch design, where the switches use the top panel as a mounting plate.
+The chassis height of 11mm was achieved through a "floating" switch design, where the switches use the top panel as a mounting plate.
 
 ### Materials
 
@@ -60,7 +48,62 @@ The chassis height of 10mm was achieved through a "floating" switch design, wher
 
 The controller contains 21 mechanical switch positions, all using Kailh Choc V1 switches mounted in PG1350 hot-swap sockets.
 
-## DIY Construction
+## Compatibility
+
+- **Firmware**: Pico-Rectangle on early revisions and HayBox on later GRAM Slim revisions
+- **Native support**: Platform-fighter and GameCube-style setups, plus standard USB use on PC
+- **Connection**: USB-C, with USB-C to GameCube and USB-C to USB-A cables included on retail units
+- **Notes**: Compatibility varies by hardware revision because the firmware stack changed over the lifetime of the product.
+
+## In the Box
+
+The controller was sold with:
+
+- GRAM Slim controller (pre-assembled)
+- GRAM neoprene soft case
+- Braided USB-C to GCC cable (1.8m)
+- Braided USB-C to USB-A cable (1.8m)
+
+### Optional Accessories
+
+- Replacement button sets
+- Alternative switches (Kailh Choc V1 variants)
+- Printed aluminum top panels
+- Replacement frames
+- Hard-shell carrying cases
+
+## History
+
+### Open Source Release
+
+On May 24, 2023, GRAM Digital Controllers published the complete design files for the GRAM Slim on GitHub under the GPL-3.0 license. The repository includes:
+
+- STL files for frame and button cap printing
+- Fabrication files for aluminum top and bottom panels
+- PCB Gerber files
+- Assembly documentation
+- Template DXF files for panel customization
+
+### Version History
+
+- GRAM1 - 5 units made
+  - Firmware: Pico-Rectangle
+- GRAM-OF1 (formerly GRAMv2?) - 16 units made
+  - Firmware: Pico-Rectangle
+    ![SlimV2](@/content/gramctrl/gram-slim/slimv2.jpg)
+- GRAMv2 (rectangle corner release?)
+- GRAM Slim Smash v3
+  - Firmware: Haybox
+- GRAM Slim Smash v3.4
+  - Firmware: Haybox
+- GRAM Slim v4 - Screwless?
+  - Firmware: Haybox
+
+**Discontinued (2025)**
+
+- Production ceased
+
+## DIY / Open Source
 
 ### Bill of Materials
 
@@ -107,50 +150,14 @@ The controller contains 21 mechanical switch positions, all using Kailh Choc V1 
 
 No soldering is required for switch installation.
 
-## Retail Package
+## Resources
 
-The controller was sold with:
-
-- GRAM Slim controller (pre-assembled)
-- GRAM neoprene soft case
-- Braided USB-C to GCC cable (1.8m)
-- Braided USB-C to USB-A cable (1.8m)
-
-### Optional Accessories
-
-- Replacement button sets
-- Alternative switches (Kailh Choc V1 variants)
-- Printed aluminum top panels
-- Replacement frames
-- Hard-shell carrying cases
-
-## Version History
-
-- GRAM1 - 5 units made
-  - Firmware: Pico-Rectangle
-- GRAM-OF1 (formerly GRAMv2?) - 16 units made
-  - Firmware: Pico-Rectangle
-    ![SlimV2](@/content/gramctrl/gram-slim/slimv2.jpg)
-- GRAMv2 (rectangle corner release?)
-- GRAM Slim Smash v3
-  - Firmware: Haybox
-- GRAM Slim Smash v3.4
-  - Firmware: Haybox
-- GRAM Slim v4 - Screwless?
-  - Firmware: Haybox
-
-**Discontinued (2025)**
-
-- Production ceased
-
-## Links
-
-## Community Resources
+### Community
 
 - [GRAMCTRL Discord](https://discord.com/invite/6TuHw2r2X4)
 - [Help Documentation](https://help.gramctrl.com/getting-started/gram-slim)
 
-### Official Resources
+### Official
 
 - [GRAM Slim Product Page (Archived Oct 9th, 2025)](https://web.archive.org/web/20251009035208/https://gramctrl.com/products/gram-slim)
 - [GRAM Slim GitHub Repository](https://github.com/GRAMCTRL/GRAM-SLIM)

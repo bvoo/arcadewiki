@@ -39,7 +39,7 @@ link: https://example.com       # optional external link
 - `platform` - platform fighters (Super Smash Bros., Rivals of Aether, etc.)
 - `multi` - genre-agnostic.
 
-After the frontmatter separator `---`, write normal Markdown/MDX for the page body (e.g., Overview, Features, Pros/Cons, etc.).
+After the frontmatter separator `---`, write normal Markdown/MDX for the page body using the canonical controller article template in `docs/controller-content-template.md`.
 
 ## Example MDX File
 
